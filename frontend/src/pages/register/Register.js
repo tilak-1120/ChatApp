@@ -1,5 +1,7 @@
 import React, { useRef } from "react";
 import "./register.css";
+import axios from "axios";
+import Login from "../login/Login";
 
 function Register() {
   const username = useRef();
@@ -7,9 +9,30 @@ function Register() {
   const password = useRef();
   const passwordAgain = useRef();
 
+  const registerCall = async (username, email, password) => {
+    try {
+      const response = await axios.post("/api/v1/register", {
+        username,
+        email,
+        password,
+      });
+
+      {
+        response ? <Login /> : alert("Registration Unsuccessfull");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleClick = async (e) => {
     e.preventDefault();
-    console.log("Register click event working properly");
+    registerCall(
+      username.current.value,
+      email.current.value,
+      passwordAgain.current.value
+    );
+    console.log("Register Successfull");
   };
 
   return (

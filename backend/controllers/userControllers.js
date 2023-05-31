@@ -21,3 +21,20 @@ exports.registerUser = async (req, res) => {
     res.status(500).json(err);
   }
 };
+
+exports.loginUser = async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    !user && res.status(404).json("Invalid Credentials");
+
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
+
+    !validPassword && res.status(400).json("Invalid Credentials");
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};

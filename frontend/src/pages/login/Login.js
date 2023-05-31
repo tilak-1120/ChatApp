@@ -1,10 +1,32 @@
 import React from "react";
+import axios from "axios";
 import "./login.css";
+import Messenger from "../messenger/Messenger";
+import { useRef } from "react";
 
 function Login() {
+  const email = useRef();
+  const password = useRef();
+
+  const loginCall = async (email, password) => {
+    try {
+      const response = await axios.post("/api/v1/login", {
+        email,
+        password,
+      });
+
+      {
+        response ? <Messenger /> : alert("Login Unsuccessfull");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleClick = (e) => {
     e.preventDefault();
-    console.log("Its working properly");
+    loginCall(email.current.value, password.current.value);
+    console.log("Login Successfull");
   };
 
   return (
@@ -17,12 +39,13 @@ function Login() {
           </span>
         </div>
         <div className="loginRight">
-          <form className="loginBox" onSubmit={handleClick}>
+          <form method="POST" className="loginBox" onSubmit={handleClick}>
             <input
               placeholder="Email"
               type="email"
               required
               className="loginInput"
+              ref={email}
             />
             <input
               placeholder="Password"
@@ -30,6 +53,7 @@ function Login() {
               required
               minLength="6"
               className="loginInput"
+              ref={password}
             />
             <button className="loginButton" type="submit">
               Log In

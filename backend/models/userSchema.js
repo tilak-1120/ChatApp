@@ -16,10 +16,9 @@ const UserSchema = new mongoose.Schema(
       max: 50,
       unique: true,
       validate(value) {
-        if (validator.isEmail(value)) {
+        if (!validator.isEmail(value)) {
           throw new Error("Invalid Email Id");
         }
-      },
     },
     password: {
       type: String,
