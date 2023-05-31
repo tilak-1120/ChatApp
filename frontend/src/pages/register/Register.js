@@ -1,13 +1,14 @@
 import React, { useRef } from "react";
 import "./register.css";
 import axios from "axios";
-import Login from "../login/Login";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
   const username = useRef();
   const email = useRef();
   const password = useRef();
   const passwordAgain = useRef();
+  const navigate = useNavigate();
 
   const registerCall = async (username, email, password) => {
     try {
@@ -18,7 +19,7 @@ function Register() {
       });
 
       {
-        response ? <Login /> : alert("Registration Unsuccessfull");
+        response ? navigate("/") : alert("Registration Unsuccessfull");
       }
     } catch (err) {
       console.log(err);
@@ -27,12 +28,17 @@ function Register() {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    registerCall(
-      username.current.value,
-      email.current.value,
-      passwordAgain.current.value
-    );
-    console.log("Register Successfull");
+
+    if (password.current.value === passwordAgain.current.value) {
+      registerCall(
+        username.current.value,
+        email.current.value,
+        passwordAgain.current.value
+      );
+      console.log("Register Successfull");
+    } else {
+      alert("Password and Confirm Password doesn't match");
+    }
   };
 
   return (
@@ -46,7 +52,7 @@ function Register() {
             </span>
           </div>
           <div className="loginRight">
-            <form className="loginBox" onSubmit={handleClick}>
+            <form method="POST" className="loginBox" onSubmit={handleClick}>
               <input
                 placeholder="Username"
                 required
@@ -78,7 +84,6 @@ function Register() {
               <button className="loginButton" type="submit">
                 Sign Up
               </button>
-              <button className="loginRegisterButton">Sign In</button>
             </form>
           </div>
         </div>

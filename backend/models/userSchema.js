@@ -19,6 +19,7 @@ const UserSchema = new mongoose.Schema(
         if (!validator.isEmail(value)) {
           throw new Error("Invalid Email Id");
         }
+      },
     },
     password: {
       type: String,

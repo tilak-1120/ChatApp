@@ -1,12 +1,13 @@
 import React from "react";
 import axios from "axios";
 import "./login.css";
-import Messenger from "../messenger/Messenger";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   const email = useRef();
   const password = useRef();
+  const navigate = useNavigate();
 
   const loginCall = async (email, password) => {
     try {
@@ -16,7 +17,7 @@ function Login() {
       });
 
       {
-        response ? <Messenger /> : alert("Login Unsuccessfull");
+        response ? navigate("/home") : alert("Login Unsuccessfull");
       }
     } catch (err) {
       console.log(err);
@@ -59,7 +60,14 @@ function Login() {
               Log In
             </button>
             <span className="loginForgot">Forgot Password?</span>
-            <button className="loginRegisterButton">Create new account</button>
+            <button
+              className="loginRegisterButton"
+              onClick={() => {
+                navigate("/register");
+              }}
+            >
+              Create new account
+            </button>
           </form>
         </div>
       </div>
