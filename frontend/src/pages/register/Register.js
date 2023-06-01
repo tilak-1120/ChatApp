@@ -18,9 +18,7 @@ function Register() {
         password,
       });
 
-      {
-        response ? navigate("/") : alert("Registration Unsuccessfull");
-      }
+      response ? navigate("/") : alert("Registration Unsuccessfull");
     } catch (err) {
       console.log(err);
     }
@@ -83,6 +81,15 @@ function Register() {
               />
               <button className="loginButton" type="submit">
                 Sign Up
+              </button>
+              <button
+                className="loginRegisterButton"
+                type="submit"
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                Sign In
               </button>
             </form>
           </div>

@@ -8,6 +8,6 @@ const {
 router.post("/addconv", addConversation);
 
 // Get Conversation
-router.get("/getconv/:userId", getConversation);
+router.get("/getconv/:username", getConversation);
 
 module.exports = router;

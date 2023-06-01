@@ -3,6 +3,10 @@
     display: flex;
   }
   
+  textarea{
+    resize: none;
+  }
+
   .chatMenu {
     flex: 3.5;
   }
@@ -36,22 +40,40 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    
   }
   
   .chatMessageInput {
     width: 80%;
     height: 90px;
-    padding: 10px;
+    padding: 15px;
+    border-radius: 30px;
   }
   
+  .chatMessageInput textarea :focus{
+    border: 2px solid #1877f2;
+    border-color: #1877f2;
+  }
+
   .chatSubmitButton {
     width: 70px;
     height: 40px;
-    border: none;
-    border-radius: 5px;
+    border: 2px solid #1877f2;
+    border-radius: 25px;
     cursor: pointer;
-    background-color: teal;
+    background-color: #1877f2;
     color: white;
+  }
+
+  .chatBoxBottom button:hover{
+    background-color: white;
+    color: #1877f2;
+    border: 2px solid #1877f2;
+    font-weight: 500;
+  }
+
+  .chatBoxBottom button{
+    transition: all ease-in-out 0.3s;
   }
   
   .chatOnline {
