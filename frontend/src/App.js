@@ -1,9 +1,10 @@
 import { createContext, useState } from "react";
 import "./App.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Login from "./pages/login/Login";
 import Messenger from "./pages/messenger/Messenger";
 import Register from "./pages/register/Register";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Error from "./pages/error/Error";
 
 export const userContext = createContext();
 
@@ -32,6 +33,7 @@ function App() {
             <Route exact path="/" element={<Login />} />
             <Route exact path="/home" element={<Messenger />} />
             <Route exact path="/register" element={<Register />} />
+            <Route exact path="/error" element={<Error />} />
           </Routes>
         </BrowserRouter>
       </userContext.Provider>

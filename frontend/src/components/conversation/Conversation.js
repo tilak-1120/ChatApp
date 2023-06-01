@@ -37,8 +37,13 @@ function Conversation() {
     <AddConversation />
   ) : (
     <>
-      <div>Username: {usm}</div>
-      <button onClick={() => setIsOpen(!isOpen)}>Add New Conversation</button>
+      <div className="username">{usm}</div>
+      <div className="addconv">
+        <label className="addconvLabel">Add Friends</label>
+        <button className="addconvButton" onClick={() => setIsOpen(!isOpen)}>
+          +
+        </button>
+      </div>
 
       {conv.map((key) => {
         return (

@@ -46,3 +46,19 @@ exports.loginUser = async (req, res) => {
     res.status(500).json(err);
   }
 };
+
+exports.getUser = async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.body.username });
+    // !user ? alert("Username doesn't exists") : res.status(200).json(user);
+
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      console.log("Username doesn't exists");
+      res.status(404).json("Username doesn't exists");
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};

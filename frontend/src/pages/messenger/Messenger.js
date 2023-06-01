@@ -6,11 +6,12 @@ import ChatOnline from "../../components/chatOnline/ChatOnline";
 import Topbar from "../../components/topbar/Topbar";
 import axios from "axios";
 import { userContext } from "../../App";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Messenger() {
   const [newMsg, setNewMsg] = useState("");
   const { usm, conversationId, isDone, setIsDone } = useContext(userContext);
+  const navigate = useNavigate();
 
   const sendMessage = async (req, res) => {
     try {
@@ -34,14 +35,7 @@ function Messenger() {
   };
 
   if (!usm) {
-    return (
-      <div>
-        <h1>Please Login To Enjoy Chatting..!! </h1>
-        <Link to="/">
-          <h1>Login</h1>
-        </Link>
-      </div>
-    );
+    navigate("/error");
   }
 
   return (
@@ -61,7 +55,13 @@ function Messenger() {
           <div className="chatBoxWrapper">
             <div className="chatBoxTop">
               <div>
-                <Message />
+                {conversationId ? (
+                  <Message />
+                ) : (
+                  <span className="noConversationText">
+                    Open a conversation to start a chat.
+                  </span>
+                )}
               </div>
             </div>
             <div className="chatBoxBottom">
@@ -77,10 +77,6 @@ function Messenger() {
                 Send
               </button>
             </div>
-
-            {/* <span className="noConversationText">
-                Open a conversation to start a chat.
-              </span> */}
           </div>
         </div>
 

@@ -1,4 +1,5 @@
 import React, { useContext, useRef } from "react";
+import "./addConversation.css";
 import axios from "axios";
 import { userContext } from "../../App";
 
@@ -8,6 +9,14 @@ function AddConversation() {
 
   const addConv = async (req, res) => {
     try {
+      const findUser = await axios.post("/api/v1/getuser", {
+        username: receiverUser.current.value,
+      });
+
+      if (!findUser && res.status === 404) {
+        alert("User doesn't exists");
+      }
+
       const response = await axios.post("/api/v1/addconv", {
         senderUser: usm,
         receiverUser: receiverUser.current.value,
@@ -29,16 +38,26 @@ function AddConversation() {
   };
 
   return (
-    <div>
-      <input type="text" placeholder="Username" ref={receiverUser} />
-      <button onClick={handleClick}>Add</button>
-      <button
-        onClick={() => {
-          setIsOpen(false);
-        }}
-      >
-        Go Back Baby!
-      </button>
+    <div className="addconvMain">
+      <input
+        className="input"
+        type="text"
+        placeholder="Enter Username"
+        ref={receiverUser}
+      />
+      <div className="buttons">
+        <button className="addButton" onClick={handleClick}>
+          Add
+        </button>
+        <button
+          className="backButton"
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        >
+          Back To Chat
+        </button>
+      </div>
     </div>
   );
 }

@@ -1,3 +1,51 @@
+.username{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 10px;
+    font-size: xx-large;
+    font-weight: 700;
+    /* background-color: #1877f2; */
+    width: 400px;
+    border-radius: 15px;
+    color: #1877f2;
+    margin-bottom: 10px;
+}
+
+.addconv{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  font-size: larger;
+  font-weight: 700;
+  color: #2c83f5;
+  
+}
+
+.addconvButton{
+  font-weight: 700;
+  font-size: larger;
+  color: aliceblue;
+  background-color: #1877f2;
+  border-radius: 30px;
+  padding: 6px 0px;
+  border: none;
+  width: 40px;
+  cursor: pointer;
+  transition: all ease-in-out 0.35s;
+}
+
+.addconvButton:hover{
+  background-color: rgb(168, 185, 200);
+  color: #1877f2;
+}
+
+.addconvLabel{
+  font-size: larger;
+}
+
 .conversation {
     display: flex;
     align-items: center;
