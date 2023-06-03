@@ -7,20 +7,20 @@ import Conversation from "../../components/conversation/Conversation";
 import Message from "../../components/message/Message";
 import ChatOnline from "../../components/chatOnline/ChatOnline";
 import Topbar from "../../components/topbar/Topbar";
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 
 function Messenger() {
   const [newMsg, setNewMsg] = useState("");
   // const [socket, setSocket] = useState(null);
-  const { usm, conversationId, isDone, setIsDone } = useContext(userContext);
+  const { usm, conversationId, isDone, setIsDone, otherName } = useContext(userContext);
   const navigate = useNavigate();
   const scrollRef = useRef();
   const newMessage = useRef();
-  const socket = useRef(io("ws://localhost:5000"));
+  // const socket = useRef(io("ws://localhost:5000"));
 
   useEffect(() => {
     // setSocket(io("ws://localhost:5000"));
-    socket.current.emit("addUser", usm);
+    // socket.current.emit("addUser", usm);
   }, [usm]);
 
   useEffect(() => {
@@ -62,14 +62,14 @@ function Messenger() {
         <div className="chatMenu">
           <div className="chatMenuWrapper">
             {/* <input placeholder="Search for friends" className="chatMenuInput" /> */}
-            <div>
+            <div className="convs">
               <Conversation />
             </div>
           </div>
         </div>
 
         <div className="chatBox">
-          <div className="selectedUser">Hello</div>
+          <div className="selectedUser">{otherName}</div>
           <div className="chatBoxWrapper">
             <div className="chatBoxTop">
               <div className="msgBox" ref={scrollRef}>

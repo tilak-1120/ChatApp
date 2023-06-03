@@ -6,13 +6,13 @@ import axios from "axios";
 
 function Conversation() {
   const [conv, setConv] = useState([]);
-  const { usm, isOpen, setIsOpen, setConversationId } = useContext(userContext);
+  const { usm, isOpen, setIsOpen, setConversationId, setotherName } = useContext(userContext);
   const getConv = async (req, res) => {
     try {
       if (usm) {
         const response = await axios.get("/api/v1/getconv/" + usm);
         setConv(response.data);
-        // console.log(response);
+        console.log(response);
       }
     } catch (err) {
       console.log(err);
@@ -21,7 +21,7 @@ function Conversation() {
 
   useEffect(() => {
     getConv();
-  });
+  },[]);
 
   return isOpen ? (
     <AddConversation />
@@ -41,6 +41,10 @@ function Conversation() {
             className="conversation"
             onClick={() => {
               setConversationId(key._id);
+              const n = key.members.filter(elm=>{
+                return elm !== usm;
+              })
+              setotherName(n);
             }}
           >
             <img

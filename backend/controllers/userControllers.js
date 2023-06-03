@@ -3,6 +3,13 @@ const bcrypt = require("bcrypt");
 
 exports.registerUser = async (req, res) => {
   try {
+    const userExist = await User.findOne({ username: req.body.username });
+
+    if (userExist) {
+      alert("User Already Registered");
+      return res.status(422).json("Already Registered");
+    }
+
     //generate new password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
@@ -24,7 +31,7 @@ exports.registerUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const user = await User.findOne({ username: req.body.username });
     !user && res.status(404).json("Invalid Credentials");
 
     const validPassword = await bcrypt.compare(
@@ -32,9 +39,28 @@ exports.loginUser = async (req, res) => {
       user.password
     );
 
-    !validPassword && res.status(400).json("Invalid Credentials");
-    res.status(200).json(user);
+    !validPassword
+      ? alert("Login Unsuccessfull Invalid Credentials")
+      : res.status(200).json(user);
   } catch (err) {
     res.status(500).json(err);
   }
 };
+
+exports.getUser = async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.body.username });
+    // !user ? alert("Username doesn't exists") : res.status(200).json(user);
+
+    if (user) {
+      res.status(200).json(user);
+    } else {
+      console.log("Username doesn't exists");
+      res.status(404).json("Username doesn't exists");
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+
