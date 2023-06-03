@@ -1,7 +1,19 @@
 import React from "react";
 import "./topbar.css";
+import { useNavigate } from "react-router-dom";
 
 function Topbar() {
+  const navigate = useNavigate();
+
+  const signOut = () => {
+    navigate("/");
+  };
+
+  const handleClick = (e) => {
+    e.preventDefault();
+    signOut();
+  };
+
   return (
     <>
       <div className="topbarContainer">
@@ -15,7 +27,9 @@ function Topbar() {
         </div>
         <div className="topbarRight">
           <div className="topbarLinks">
-            <span className="topbarLink">Sign Out</span>
+            <span className="topbarLink" onClick={handleClick}>
+              Sign Out
+            </span>
           </div>
         </div>
       </div>

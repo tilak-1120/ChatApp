@@ -1,24 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import axios from "axios";
 import "./login.css";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { userContext } from "../../App";
 
 function Login() {
-  const email = useRef();
+  const { setUsm } = useContext(userContext);
+  const username = useRef();
   const password = useRef();
   const navigate = useNavigate();
 
-  const loginCall = async (email, password) => {
+  const loginCall = async (username, password) => {
     try {
       const response = await axios.post("/api/v1/login", {
-        email,
+        username,
         password,
       });
 
-      {
-        response ? navigate("/home") : alert("Login Unsuccessfull");
-      }
+      response ? navigate("/home") : alert("Login Unsuccessfull");
     } catch (err) {
       console.log(err);
     }
@@ -26,7 +26,8 @@ function Login() {
 
   const handleClick = (e) => {
     e.preventDefault();
-    loginCall(email.current.value, password.current.value);
+    loginCall(username.current.value, password.current.value);
+    setUsm(username.current.value);
     console.log("Login Successfull");
   };
 
@@ -42,11 +43,11 @@ function Login() {
         <div className="loginRight">
           <form method="POST" className="loginBox" onSubmit={handleClick}>
             <input
-              placeholder="Email"
-              type="email"
+              placeholder="Username"
+              type="text"
               required
               className="loginInput"
-              ref={email}
+              ref={username}
             />
             <input
               placeholder="Password"

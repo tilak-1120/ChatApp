@@ -1,9 +1,11 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import "./register.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { userContext } from "../../App";
 
 function Register() {
+  const { usm } = useContext(userContext);
   const username = useRef();
   const email = useRef();
   const password = useRef();
@@ -18,9 +20,7 @@ function Register() {
         password,
       });
 
-      {
-        response ? navigate("/") : alert("Registration Unsuccessfull");
-      }
+      response ? navigate("/") : alert("Registration Unsuccessfull");
     } catch (err) {
       console.log(err);
     }
@@ -43,51 +43,64 @@ function Register() {
 
   return (
     <>
-      <div className="login">
-        <div className="loginWrapper">
-          <div className="loginLeft">
-            <h3 className="loginLogo">ChatApp</h3>
-            <span className="loginDesc">
-              Connect with us by conecting with the world.
-            </span>
-          </div>
-          <div className="loginRight">
-            <form method="POST" className="loginBox" onSubmit={handleClick}>
-              <input
-                placeholder="Username"
-                required
-                ref={username}
-                className="loginInput"
-              />
-              <input
-                placeholder="Email"
-                required
-                ref={email}
-                className="loginInput"
-                type="email"
-              />
-              <input
-                placeholder="Password"
-                required
-                ref={password}
-                className="loginInput"
-                type="password"
-                minLength="6"
-              />
-              <input
-                placeholder="Confirm Password"
-                required
-                ref={passwordAgain}
-                className="loginInput"
-                type="password"
-              />
-              <button className="loginButton" type="submit">
-                Sign Up
-              </button>
-            </form>
+      {!usm ? (
+        <div className="login">
+          <div className="loginWrapper">
+            <div className="loginLeft">
+              <h3 className="loginLogo">ChatApp</h3>
+              <span className="loginDesc">
+                Connect with us by conecting with the world.
+              </span>
+            </div>
+            <div className="loginRight">
+              <form method="POST" className="loginBox" onSubmit={handleClick}>
+                <input
+                  placeholder="Username"
+                  required
+                  ref={username}
+                  className="loginInput"
+                />
+                <input
+                  placeholder="Email"
+                  required
+                  ref={email}
+                  className="loginInput"
+                  type="email"
+                />
+                <input
+                  placeholder="Password"
+                  required
+                  ref={password}
+                  className="loginInput"
+                  type="password"
+                  minLength="6"
+                />
+                <input
+                  placeholder="Confirm Password"
+                  required
+                  ref={passwordAgain}
+                  className="loginInput"
+                  type="password"
+                />
+                <button className="loginButton" type="submit">
+                  Sign Up
+                </button>
+                <button
+                  className="loginRegisterButton"
+                  type="submit"
+                  onClick={() => {
+                    navigate("/");
+                  }}
+                >
+                  Sign In
+                </button>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
+      ) : (
+        navigate("/error")
+      )}
     </>
   );
 }
