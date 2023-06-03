@@ -6,6 +6,10 @@
     align-items: center;
     justify-content: center;
   }
+
+  body{
+    color: black;
+  }
   
   .loginWrapper {
     width: 70%;
