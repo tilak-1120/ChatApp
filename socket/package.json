@@ -1,0 +1,16 @@
+{
+  "name": "socket",
+  "version": "1.0.0",
+  "description": "Socket server for ChatApp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Tilak Kundaliya",
+  "license": "ISC",
+  "dependencies": {
+    "socket.io": "^4.6.2"
+  }
+}

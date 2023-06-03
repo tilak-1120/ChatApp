@@ -3,7 +3,6 @@ import "./conversation.css";
 import { userContext } from "../../App";
 import AddConversation from "../addConversation/AddConversation";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 function Conversation() {
   const [conv, setConv] = useState([]);
@@ -23,15 +22,6 @@ function Conversation() {
   useEffect(() => {
     getConv();
   });
-
-  if (!usm) {
-    return (
-      <div>
-        <h1>Plz </h1>
-        <Link to="/">Login</Link>
-      </div>
-    );
-  }
 
   return isOpen ? (
     <AddConversation />

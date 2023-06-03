@@ -13,10 +13,6 @@ function AddConversation() {
         username: receiverUser.current.value,
       });
 
-      if (!findUser && res.status === 404) {
-        alert("User doesn't exists");
-      }
-
       const response = await axios.post("/api/v1/addconv", {
         senderUser: usm,
         receiverUser: receiverUser.current.value,
@@ -24,8 +20,10 @@ function AddConversation() {
 
       if (response) {
         console.log(response.data._id);
-        alert("New Conversation Added Successfully");
+        alert("New Friend Added Successfully");
         setIsOpen(false);
+      } else {
+        alert("User doesn't exists");
       }
     } catch (err) {
       console.log(err);

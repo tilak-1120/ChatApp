@@ -80,6 +80,10 @@
     flex: 3;
   }
   
+  .chatMenuWrapper{
+    overflow-y: visible;
+  }
+
   .chatMenuWrapper,
   .chatBoxWrapper,
   .chatOnlineWrapper {
@@ -115,3 +119,19 @@
     }
   }
   
+  .selectedUser{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: larger;
+    padding-left: 15px;
+    position: absolute;
+    z-index: 1;
+    height: 60px;
+    width: 640px;
+    background: green;
+  }
+
+  .msgBox{
+    margin-top: 70px;
+  }

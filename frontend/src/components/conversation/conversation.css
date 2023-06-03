@@ -52,10 +52,13 @@
     padding: 10px;
     cursor: pointer;
     margin-top: 20px;
+    transition: all ease-in-out 0.3s;
   }
-  
+
   .conversation:hover {
-    background-color: rgb(245, 243, 243);
+    background-color: #3b86e8;
+    color: aliceblue;
+    transform: scale(1.05);
   }
   
   .conversationImg {

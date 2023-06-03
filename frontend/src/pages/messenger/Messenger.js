@@ -1,26 +1,47 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { userContext } from "../../App";
+import { useNavigate } from "react-router-dom";
 import "./messenger.css";
+import axios from "axios";
 import Conversation from "../../components/conversation/Conversation";
 import Message from "../../components/message/Message";
 import ChatOnline from "../../components/chatOnline/ChatOnline";
 import Topbar from "../../components/topbar/Topbar";
-import axios from "axios";
-import { userContext } from "../../App";
-import { useNavigate } from "react-router-dom";
+import { io } from "socket.io-client";
 
 function Messenger() {
   const [newMsg, setNewMsg] = useState("");
+  // const [socket, setSocket] = useState(null);
   const { usm, conversationId, isDone, setIsDone } = useContext(userContext);
   const navigate = useNavigate();
+  const scrollRef = useRef();
+  const newMessage = useRef();
+  const socket = useRef(io("ws://localhost:5000"));
+
+  useEffect(() => {
+    // setSocket(io("ws://localhost:5000"));
+    socket.current.emit("addUser", usm);
+  }, [usm]);
+
+  useEffect(() => {
+    // scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (!usm) {
+      navigate("/error");
+    }
+  }, [usm]);
 
   const sendMessage = async (req, res) => {
     try {
+      if (!conversationId) {
+        alert("Please Select Conversation");
+      }
       const response = await axios.post("/api/v1/addmsg", {
         conversationId: conversationId,
         sender: usm,
         text: newMsg,
       });
       setNewMsg("");
+      newMessage.current.value = "";
       setIsDone(!isDone);
       console.log(response);
     } catch (err) {
@@ -33,10 +54,6 @@ function Messenger() {
     e.preventDefault();
     sendMessage();
   };
-
-  if (!usm) {
-    navigate("/error");
-  }
 
   return (
     <>
@@ -52,9 +69,10 @@ function Messenger() {
         </div>
 
         <div className="chatBox">
+          <div className="selectedUser">Hello</div>
           <div className="chatBoxWrapper">
             <div className="chatBoxTop">
-              <div>
+              <div className="msgBox" ref={scrollRef}>
                 {conversationId ? (
                   <Message />
                 ) : (
@@ -68,10 +86,10 @@ function Messenger() {
               <textarea
                 className="chatMessageInput"
                 placeholder="Send a chat..!"
-                onChange={(e) => {
-                  setNewMsg(e.target.value);
+                onChange={() => {
+                  setNewMsg(newMessage.current.value);
                 }}
-                value={newMsg}
+                ref={newMessage}
               ></textarea>
               <button className="chatSubmitButton" onClick={handleClick}>
                 Send
