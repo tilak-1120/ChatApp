@@ -21,7 +21,7 @@ function Conversation() {
 
   useEffect(() => {
     getConv();
-  },[]);
+  },[isOpen]);
 
   return isOpen ? (
     <AddConversation />
