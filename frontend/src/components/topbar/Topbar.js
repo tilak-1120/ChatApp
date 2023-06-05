@@ -21,9 +21,9 @@ function Topbar() {
           <span className="logo">ChatApp</span>
         </div>
         <div className="topbarCenter">
-          <div className="searchbar">
+          {/* <div className="searchbar">
             <input placeholder="Search for friends" className="searchInput" />
-          </div>
+          </div> */}
         </div>
         <div className="topbarRight">
           <div className="topbarLinks">

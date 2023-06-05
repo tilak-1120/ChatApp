@@ -17,7 +17,6 @@
     /* border: 2px rgb(165, 165, 165) solid; */
     border-radius: 10px;
     overflow-y: scroll;
-    overflow-x: hidden;
   }
 
   .chatMenuInput {
@@ -162,7 +161,7 @@
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     /* border-bottom: rgb(165, 165, 165) 3px solid; */
-    width: 658px;
+    width: 680px;
     margin: auto;
   }
 

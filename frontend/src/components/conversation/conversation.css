@@ -7,7 +7,7 @@
   font-size: xx-large;
   font-weight: 700;
   /* background-color: #1877f2; */
-  width: 400px;
+  width: 402px;
   border-radius: 10px;
   color: #1877f2;
   margin-bottom: 10px;
@@ -59,7 +59,8 @@
   align-items: center;
   padding: 10px;
   cursor: pointer;
-  margin-top: 5px;
+  /* margin-top: 5px; */
+  margin: 10px 15px;
   transition: all ease-in-out 0.3s;
   border-bottom: 2px solid rgb(165, 165, 165);
   }
@@ -69,6 +70,7 @@
     color: aliceblue;
     transform: scale(1.05);
     border-radius: 20px;
+    z-index: 100;
   }
   
   .conversationImg {
