@@ -1,27 +1,35 @@
 .username{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    padding: 10px;
-    font-size: xx-large;
-    font-weight: 700;
-    /* background-color: #1877f2; */
-    width: 400px;
-    border-radius: 15px;
-    color: #1877f2;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  padding: 10px;
+  font-size: xx-large;
+  font-weight: 700;
+  /* background-color: #1877f2; */
+  width: 400px;
+  border-radius: 10px;
+  color: #1877f2;
+  margin-bottom: 10px;
+  /* background-color: rgb(175, 175, 175); */
+  background-color: rgb(103, 103, 103);
+  color: white;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  height: 45px;
 }
 
 .addconv{
   display: flex;
+  width: 90%;
+  margin: auto;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   height: 50px;
   font-size: larger;
   font-weight: 700;
   color: #2c83f5;
-  
+  border-bottom: 2px solid gray;
 }
 
 .addconvButton{
@@ -47,18 +55,20 @@
 }
 
 .conversation {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: all ease-in-out 0.3s;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: all ease-in-out 0.3s;
+  border-bottom: 2px solid rgb(165, 165, 165);
   }
 
   .conversation:hover {
     background-color: #3b86e8;
     color: aliceblue;
     transform: scale(1.05);
+    border-radius: 20px;
   }
   
   .conversationImg {
@@ -72,7 +82,24 @@
   .conversationName {
     font-weight: 500;
   }
-  
+
+  .input{
+    display: flex;
+    align-items: center;
+    /* justify-content: space-around; */
+    /* padding: 0px 5px; */
+    width: 385px;
+    height: 50px;
+    margin: 15px 10px;
+    font-size: large;
+    border: none;
+    border-bottom: 2px solid #086ef5;
+    outline: none;
+    background-color: lightgray;
+    /* margin-bottom: 40px; */
+  }
+
+
   @media screen and (max-width: 768px) {
     .conversationName {
       display: none;

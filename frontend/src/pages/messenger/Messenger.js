@@ -11,23 +11,41 @@ import { io } from "socket.io-client";
 
 function Messenger() {
   const [newMsg, setNewMsg] = useState("");
-  // const [socket, setSocket] = useState(null);
-  const { usm, conversationId, isDone, setIsDone } = useContext(userContext);
+  const [arrivalMsg, setArrivalMsg] = useState(null);
+  // const [loggedIn, setLoggedIn] = useState();
+  const { usm, conversationId, isDone, setIsDone, conv, setMsg, otherName } =
+    useContext(userContext);
   const navigate = useNavigate();
   const scrollRef = useRef();
   const newMessage = useRef();
-  const socket = useRef(io("ws://localhost:5000"));
+  const socket = useRef();
+
+  useEffect(() => {
+    socket.current = io("ws://localhost:5000");
+    socket.current.on("getMessage", (data) => {
+      setArrivalMsg({
+        sender: data.sender,
+        text: data.text,
+        createdAt: Date.now(),
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    arrivalMsg &&
+      conv?.members.includes(arrivalMsg.sender) &&
+      setMsg(arrivalMsg);
+  }, [arrivalMsg, conv, setMsg]);
 
   useEffect(() => {
     // setSocket(io("ws://localhost:5000"));
-    socket.current.emit("addUser", usm);
-  }, [usm]);
-
-  useEffect(() => {
-    // scrollRef.current?.scrollIntoView({ behavior: "smooth" });
     if (!usm) {
       navigate("/error");
     }
+    socket.current.emit("addUser", usm);
+    socket.current.on("getUsers", (users) => {
+      console.log(users);
+    });
   }, [usm]);
 
   const sendMessage = async (req, res) => {
@@ -35,11 +53,21 @@ function Messenger() {
       if (!conversationId) {
         alert("Please Select Conversation");
       }
+
+      const receiver = conv.members.find((m) => m !== usm);
+
       const response = await axios.post("/api/v1/addmsg", {
         conversationId: conversationId,
         sender: usm,
         text: newMsg,
       });
+
+      socket.current.emit("sendMessage", {
+        sender: usm,
+        receiver: receiver,
+        text: newMsg,
+      });
+
       setNewMsg("");
       newMessage.current.value = "";
       setIsDone(!isDone);
@@ -62,14 +90,15 @@ function Messenger() {
         <div className="chatMenu">
           <div className="chatMenuWrapper">
             {/* <input placeholder="Search for friends" className="chatMenuInput" /> */}
-            <div>
+
+            <div className="convs">
               <Conversation />
             </div>
           </div>
         </div>
 
         <div className="chatBox">
-          <div className="selectedUser">Hello</div>
+          <div className="selectedUser">{otherName}</div>
           <div className="chatBoxWrapper">
             <div className="chatBoxTop">
               <div className="msgBox" ref={scrollRef}>

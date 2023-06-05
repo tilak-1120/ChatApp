@@ -13,6 +13,9 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [conversationId, setConversationId] = useState("");
   const [isDone, setIsDone] = useState(false);
+  const [conv, setConv] = useState([]);
+  const [msg, setMsg] = useState([]);
+  const [otherName, setOtherName] = useState("");
 
   return (
     <>
@@ -26,6 +29,12 @@ function App() {
           setConversationId,
           isDone,
           setIsDone,
+          conv,
+          setConv,
+          msg,
+          setMsg,
+          otherName,
+          setOtherName,
         }}
       >
         <BrowserRouter>

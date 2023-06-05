@@ -5,8 +5,16 @@ import AddConversation from "../addConversation/AddConversation";
 import axios from "axios";
 
 function Conversation() {
-  const [conv, setConv] = useState([]);
-  const { usm, isOpen, setIsOpen, setConversationId } = useContext(userContext);
+  // const [conv, setConv] = useState([]);
+  const {
+    usm,
+    isOpen,
+    setIsOpen,
+    setConversationId,
+    conv,
+    setConv,
+    setOtherName,
+  } = useContext(userContext);
   const getConv = async (req, res) => {
     try {
       if (usm) {
@@ -21,7 +29,7 @@ function Conversation() {
 
   useEffect(() => {
     getConv();
-  });
+  }, [isOpen]);
 
   return isOpen ? (
     <AddConversation />
@@ -35,12 +43,18 @@ function Conversation() {
         </button>
       </div>
 
+      <input className="input" type="text" placeholder="Search friends...!!" />
+
       {conv.map((key) => {
         return (
           <div
             className="conversation"
             onClick={() => {
               setConversationId(key._id);
+              const n = key.members.filter((elm) => {
+                return elm !== usm;
+              });
+              setOtherName(n);
             }}
           >
             <img

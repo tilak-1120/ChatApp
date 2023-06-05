@@ -11,6 +11,15 @@
     flex: 3.5;
   }
   
+  .convs{
+    background-color: lightgray;
+    height: 89vh;
+    /* border: 2px rgb(165, 165, 165) solid; */
+    border-radius: 10px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
   .chatMenuInput {
     width: 90%;
     padding: 10px 0;
@@ -20,6 +29,12 @@
   
   .chatBox {
     flex: 5.5;
+    background-color: gray;
+    margin-top: 10px;
+    max-height: 89vh;
+    background-image: url("https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg");
+    border-radius: 10px;
+    border-top: 0;
   }
   
   .chatBoxWrapper {
@@ -40,14 +55,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    
+    width: 100%;
   }
   
   .chatMessageInput {
-    width: 80%;
-    height: 90px;
+    width: 82.5%;
+    height: 40px;
     padding: 15px;
-    border-radius: 30px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    font-size: large;
   }
   
   .chatMessageInput textarea :focus{
@@ -56,10 +73,13 @@
   }
 
   .chatSubmitButton {
+    position: relative;
+    left: -10px;
+    top: -10px;
     width: 70px;
-    height: 40px;
+    height: 50px;
     border: 2px solid #1877f2;
-    border-radius: 25px;
+    border-radius: 10px;
     cursor: pointer;
     background-color: #1877f2;
     color: white;
@@ -69,6 +89,7 @@
     background-color: white;
     color: #1877f2;
     border: 2px solid #1877f2;
+    border-radius: 25px;
     font-weight: 500;
   }
 
@@ -78,6 +99,12 @@
   
   .chatOnline {
     flex: 3;
+    background-color: lightgray;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    max-height: 89vh;
+    border-radius: 10px;
   }
   
   .chatMenuWrapper{
@@ -97,7 +124,7 @@
     position: absolute;
     top: 20%;
     font-size: 40px;
-    color: rgb(224, 220, 220);
+    color: gray;
     cursor: default;
   }
   
@@ -123,13 +150,20 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    font-size: larger;
+    font-size: 23px;
     padding-left: 15px;
     position: absolute;
     z-index: 1;
-    height: 60px;
-    width: 640px;
-    background: green;
+    height: 65px;
+    /* width: 640px; */
+    /* background: lightgray; */
+    background-color: rgb(103, 103, 103);
+    color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    /* border-bottom: rgb(165, 165, 165) 3px solid; */
+    width: 658px;
+    margin: auto;
   }
 
   .msgBox{
