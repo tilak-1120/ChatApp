@@ -16,6 +16,7 @@ function App() {
   const [conv, setConv] = useState([]);
   const [msg, setMsg] = useState([]);
   const [otherName, setOtherName] = useState("");
+  const [usersOnline, setUsersOnline] = useState([]);
 
   return (
     <>
@@ -35,6 +36,8 @@ function App() {
           setMsg,
           otherName,
           setOtherName,
+          usersOnline,
+          setUsersOnline,
         }}
       >
         <BrowserRouter>

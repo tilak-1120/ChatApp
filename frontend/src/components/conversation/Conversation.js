@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import "./conversation.css";
 import { userContext } from "../../App";
 import AddConversation from "../addConversation/AddConversation";
 import axios from "axios";
 
 function Conversation() {
-  // const [conv, setConv] = useState([]);
   const {
     usm,
     isOpen,
@@ -43,7 +42,7 @@ function Conversation() {
         </button>
       </div>
 
-      <input className="input" type="text" placeholder="Search friends...!!" />
+      {/* <input className="input" type="text" placeholder="Search friends...!!" /> */}
 
       {conv.map((key) => {
         return (

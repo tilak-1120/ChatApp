@@ -1,7 +1,7 @@
 .topbarContainer {
     height: 70px;
     width: 100%;
-    background-color: #1877f2;
+    background-color: #11009E;
     display: flex;
     align-items: center;
     position: sticky;
@@ -14,7 +14,7 @@
   }
   
   .logo {
-    font-size: 24px;
+    font-size: 40px;
     margin-left: 20px;
     font-weight: bold;
     color: white;
@@ -62,16 +62,16 @@
     cursor: pointer;
     font-weight: 500;
     padding: 5px 20px;
-    border: 2px solid #1877f2;
+    border: 2px solid #11009E;
     border-radius: 12px;
     cursor: pointer;
     background-color: white;
-    color: #1877f2;
+    color: #11009E;
     transition: all ease-in-out 0.3s;
   }
 
   .topbarLinks :hover{
-    background-color: #1877f2;
+    background-color: #11009E;
     color: white;
     border: 2px solid white;
   }

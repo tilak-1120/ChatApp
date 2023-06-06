@@ -11,10 +11,18 @@ import { io } from "socket.io-client";
 
 function Messenger() {
   const [newMsg, setNewMsg] = useState("");
+  const [usersName, setUsersName] = useState([]);
   const [arrivalMsg, setArrivalMsg] = useState(null);
-  // const [loggedIn, setLoggedIn] = useState();
-  const { usm, conversationId, isDone, setIsDone, conv, setMsg, otherName } =
-    useContext(userContext);
+  const [receiver, setReceiver] = useState();
+  const {
+    usm,
+    conversationId,
+    isDone,
+    setIsDone,
+    setMsg,
+    otherName,
+    setUsersOnline,
+  } = useContext(userContext);
   const navigate = useNavigate();
   const scrollRef = useRef();
   const newMessage = useRef();
@@ -32,10 +40,14 @@ function Messenger() {
   }, []);
 
   useEffect(() => {
-    arrivalMsg &&
-      conv?.members.includes(arrivalMsg.sender) &&
-      setMsg(arrivalMsg);
-  }, [arrivalMsg, conv, setMsg]);
+    getMembersArray();
+  }, [conversationId]);
+
+  useEffect(() => {
+    arrivalMsg && setMsg((prev) => [...prev, arrivalMsg]);
+
+    console.log(arrivalMsg);
+  }, [arrivalMsg, setMsg]);
 
   useEffect(() => {
     // setSocket(io("ws://localhost:5000"));
@@ -44,6 +56,7 @@ function Messenger() {
     }
     socket.current.emit("addUser", usm);
     socket.current.on("getUsers", (users) => {
+      setUsersOnline(users);
       console.log(users);
     });
   }, [usm]);
@@ -53,8 +66,6 @@ function Messenger() {
       if (!conversationId) {
         alert("Please Select Conversation");
       }
-
-      const receiver = conv.members.find((m) => m !== usm);
 
       const response = await axios.post("/api/v1/addmsg", {
         conversationId: conversationId,
@@ -78,9 +89,37 @@ function Messenger() {
     }
   };
 
+  useEffect(() => {
+    scrollRef?.current.scrollIntoView({ behavior: "smooth", block: "end" });
+    // const s = scrollRef.current;
+    // s.scrollTop = s.scrollHeight;
+  }, [arrivalMsg, sendMessage]);
+
+  const getMembersArray = async () => {
+    try {
+      if (conversationId) {
+        const response = await axios.get(
+          "/api/v1/getspecificconv/" + conversationId
+        );
+        const n = response.data.members.filter((elm) => {
+          return elm !== usm;
+        });
+        console.log(n);
+        setReceiver(n);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleClick = (e) => {
     e.preventDefault();
-    sendMessage();
+    if (newMessage.current.value === "") {
+      alert("Can't send empty message..!!!");
+      document.getElementById("deep").focus();
+    } else {
+      sendMessage();
+    }
   };
 
   return (
@@ -98,38 +137,46 @@ function Messenger() {
         </div>
 
         <div className="chatBox">
-          <div className="selectedUser">{otherName}</div>
+          {conversationId && <div className="selectedUser">{otherName}</div>}
           <div className="chatBoxWrapper">
             <div className="chatBoxTop">
               <div className="msgBox" ref={scrollRef}>
                 {conversationId ? (
                   <Message />
                 ) : (
-                  <span className="noConversationText">
-                    Open a conversation to start a chat.
-                  </span>
+                  <>
+                    <span className="noConversationText">
+                      Open a conversation,
+                    </span>
+                    <span className="noConversationText2">
+                      To start a chat.
+                    </span>
+                  </>
                 )}
               </div>
             </div>
-            <div className="chatBoxBottom">
-              <textarea
-                className="chatMessageInput"
-                placeholder="Send a chat..!"
-                onChange={() => {
-                  setNewMsg(newMessage.current.value);
-                }}
-                ref={newMessage}
-              ></textarea>
-              <button className="chatSubmitButton" onClick={handleClick}>
-                Send
-              </button>
-            </div>
+            {conversationId && (
+              <div className="chatBoxBottom">
+                <textarea
+                  id="deep"
+                  className="chatMessageInput"
+                  placeholder="Send a chat..!"
+                  onChange={() => {
+                    setNewMsg(newMessage.current.value);
+                  }}
+                  ref={newMessage}
+                ></textarea>
+                <button className="chatSubmitButton" onClick={handleClick}>
+                  Send
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
         <div className="chatOnline">
           <div className="chatOnlineWrapper">
-            <ChatOnline />
+            <ChatOnline users={usersName} />
           </div>
         </div>
       </div>

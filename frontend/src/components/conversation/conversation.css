@@ -4,7 +4,7 @@
   justify-content: flex-start;
   cursor: pointer;
   padding: 10px;
-  font-size: xx-large;
+  font-size: 30px;
   font-weight: 700;
   /* background-color: #1877f2; */
   width: 402px;
@@ -12,7 +12,7 @@
   color: #1877f2;
   margin-bottom: 10px;
   /* background-color: rgb(175, 175, 175); */
-  background-color: rgb(103, 103, 103);
+  background-color: #4942E4;
   color: white;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -36,7 +36,7 @@
   font-weight: 700;
   font-size: larger;
   color: aliceblue;
-  background-color: #1877f2;
+  background-color: #4942E4;
   border-radius: 30px;
   padding: 6px 0px;
   border: none;
@@ -47,11 +47,13 @@
 
 .addconvButton:hover{
   background-color: rgb(168, 185, 200);
-  color: #1877f2;
+  color: #4942E4;
 }
 
 .addconvLabel{
   font-size: larger;
+  color: rgb(88, 87, 87);
+  /* background-color: #086ef5; */
 }
 
 .conversation {
@@ -66,7 +68,7 @@
   }
 
   .conversation:hover {
-    background-color: #3b86e8;
+    background-color: #4942E4;
     color: aliceblue;
     transform: scale(1.05);
     border-radius: 20px;

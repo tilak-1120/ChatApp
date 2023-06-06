@@ -10,7 +10,7 @@
     border: none;
     border-bottom: 2px solid #086ef5;
     outline: none;
-    background-color: lightgray;
+    background-color: whitesmoke;
     margin-bottom: 40px;
 }
 
@@ -30,9 +30,9 @@
     height: 40px;
     width: 100px;
     border-radius: 30px;
-    background-color: #086ef5;
+    background-color: #4942E4;
     color: aliceblue;
-    border: 2px solid #086ef5;
+    border: 2px solid #4942E4;
     cursor: pointer;
     font-weight: 600;
     transition: all ease-in-out 0.35s;
@@ -40,7 +40,7 @@
 
 .addButton:hover{
     background-color: aliceblue;
-    color: #086ef5;
+    color: #4942E4;
     border-radius: 10px;
 }
 
@@ -48,16 +48,16 @@
     height: 40px;
     width: 120px;
     border-radius: 30px;
-    color: #086ef5;
+    color: #4942E4;
     border: none;
     cursor: pointer;
     font-weight: 600;
-    border: 2px solid #086ef5;
+    border: 2px solid #4942E4;
     transition: all ease-in-out 0.35s;
 }
 
 .backButton:hover{
-    background-color: #086ef5;
+    background-color: #4942E4;
     color: aliceblue;
     border-radius: 10px;
 }

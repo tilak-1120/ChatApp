@@ -25,3 +25,12 @@ exports.getConversation = async (req, res) => {
     res.status(500).json(err);
   }
 };
+
+exports.getSpecificConversation = async (req, res) => {
+  try {
+    const conversation = await Conversation.findById(req.params.convId);
+    res.status(200).json(conversation);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};

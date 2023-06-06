@@ -6,7 +6,6 @@ import { format } from "timeago.js";
 
 function Message() {
   const { conversationId, usm, isDone, msg, setMsg } = useContext(userContext);
-  // const [msg, setMsg] = useState([]);
 
   const getMessages = async (req, res) => {
     try {
