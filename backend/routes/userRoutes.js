@@ -12,6 +12,6 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 
 // Get User
-router.post("/getuser", getUser);
+router.get("/getuser/:username", getUser);
 
 module.exports = router;

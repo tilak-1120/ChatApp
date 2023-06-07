@@ -5,25 +5,43 @@ import { userContext } from "../../App";
 
 function AddConversation() {
   const receiverUser = useRef();
-  const { setIsOpen, usm } = useContext(userContext);
+  const { setIsOpen, usm, conv } = useContext(userContext);
 
   const addConv = async (req, res) => {
     try {
-      const findUser = await axios.post("/api/v1/getuser", {
-        username: receiverUser.current.value,
-      });
+      const findUser = await axios.get(
+        "/api/v1/getuser/" + receiverUser.current.value
+      );
 
-      const response = await axios.post("/api/v1/addconv", {
-        senderUser: usm,
-        receiverUser: receiverUser.current.value,
-      });
+      if (findUser.status === 404) {
+        alert("Invalid Username");
+      } else if (findUser) {
+        let convUsers = [];
 
-      if (response) {
-        console.log(response.data._id);
-        alert("New Friend Added Successfully");
-        setIsOpen(false);
+        conv.map((key) => {
+          key.members.filter((elm) => {
+            if (elm !== usm) {
+              let m = elm;
+              convUsers.push(m);
+            }
+          });
+        });
+        // console.log(convUsers);
+        convUsers.find((user) => user === receiverUser.current.value) &&
+          alert("This friend already exists");
       } else {
-        alert("User doesn't exists");
+        const response = await axios.post("/api/v1/addconv", {
+          senderUser: usm,
+          receiverUser: receiverUser.current.value,
+        });
+
+        if (response) {
+          // console.log(response.data._id);
+          alert("New Friend Added Successfully");
+          setIsOpen(false);
+        } else {
+          alert("User doesn't exists");
+        }
       }
     } catch (err) {
       console.log(err);

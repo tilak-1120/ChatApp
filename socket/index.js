@@ -4,6 +4,7 @@ const io = require("socket.io")(5000, {
   },
 });
 
+console.log("Socket Server running at port 5000");
 let users = [];
 
 const addUser = (userName, socketId) => {

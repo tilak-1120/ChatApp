@@ -49,7 +49,7 @@ exports.loginUser = async (req, res) => {
 
 exports.getUser = async (req, res) => {
   try {
-    const user = await User.findOne({ username: req.body.username });
+    const user = await User.findOne({ username: req.params.username });
     // !user ? alert("Username doesn't exists") : res.status(200).json(user);
 
     if (user) {

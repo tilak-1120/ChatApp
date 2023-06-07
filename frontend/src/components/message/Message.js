@@ -23,6 +23,10 @@ function Message() {
     getMessages();
   }, [conversationId, isDone]);
 
+  // useEffect(() => {
+  //   alert("New Message Received");
+  // }, [setMsg]);
+
   return (
     <>
       {msg.map((key) => {

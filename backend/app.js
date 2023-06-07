@@ -7,10 +7,12 @@ app.use(express.json());
 const userRoute = require("./routes/userRoutes");
 const conversationRoute = require("./routes/conversationRoutes");
 const messageRoute = require("./routes/messageRoutes");
+const groupRoute = require("./routes/groupRoutes");
 
 // Routes Import
 app.use("/api/v1", userRoute);
 app.use("/api/v1", conversationRoute);
 app.use("/api/v1", messageRoute);
+app.use("/api/v1", groupRoute);
 
 module.exports = app;

@@ -11,9 +11,9 @@ import { io } from "socket.io-client";
 
 function Messenger() {
   const [newMsg, setNewMsg] = useState("");
-  const [usersName, setUsersName] = useState([]);
-  const [arrivalMsg, setArrivalMsg] = useState(null);
   const [receiver, setReceiver] = useState();
+  const [arrivalMsg, setArrivalMsg] = useState(null);
+
   const {
     usm,
     conversationId,
@@ -23,6 +23,7 @@ function Messenger() {
     otherName,
     setUsersOnline,
   } = useContext(userContext);
+
   const navigate = useNavigate();
   const scrollRef = useRef();
   const newMessage = useRef();
@@ -104,7 +105,7 @@ function Messenger() {
         const n = response.data.members.filter((elm) => {
           return elm !== usm;
         });
-        console.log(n);
+        // console.log(n);
         setReceiver(n);
       }
     } catch (err) {
@@ -176,7 +177,7 @@ function Messenger() {
 
         <div className="chatOnline">
           <div className="chatOnlineWrapper">
-            <ChatOnline users={usersName} />
+            <ChatOnline />
           </div>
         </div>
       </div>
