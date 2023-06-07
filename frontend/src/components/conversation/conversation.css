@@ -1,22 +1,30 @@
 .username{
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    cursor: pointer;
-    padding: 10px;
-    font-size: xx-large;
-    font-weight: 700;
-    /* background-color: #1877f2; */
-    width: 95.8%;
-    border-radius: 10px;
-    color: #1877f2;
-    margin-bottom: 10px;
-    /* background-color: rgb(175, 175, 175); */
-    background-color: rgb(103, 103, 103);
-    color: white;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    height: 5.05vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 30px;
+  font-weight: 700;
+  /* background-color: #1877f2; */
+  width: 402px;
+  border-radius: 10px;
+  color: #1877f2;
+  margin-bottom: 10px;
+  /* background-color: rgb(175, 175, 175); */
+  background-color: #4942E4;
+  color: white;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  height: 45px;
+  margin: auto;
+  transition: all ease-in-out 0.35s;
+
+}
+.username:hover{
+  transform: scale(1.05);
+  background-color: rgb(168, 185, 200);
+  color: #4942E4;
 }
 
 .addconv{
@@ -36,7 +44,7 @@
   font-weight: 700;
   font-size: larger;
   color: aliceblue;
-  background-color: #1877f2;
+  background-color: #4942E4;
   border-radius: 30px;
   padding: 6px 0px;
   border: none;
@@ -47,28 +55,32 @@
 
 .addconvButton:hover{
   background-color: rgb(168, 185, 200);
-  color: #1877f2;
+  color: #4942E4;
 }
 
 .addconvLabel{
   font-size: larger;
+  color: rgb(88, 87, 87);
+  /* background-color: #086ef5; */
 }
 
 .conversation {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    cursor: pointer;
-    margin-top: 5px;
-    transition: all ease-in-out 0.3s;
-    border-bottom: 2px solid rgb(165, 165, 165);
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  /* margin-top: 5px; */
+  margin: 10px 15px;
+  transition: all ease-in-out 0.3s;
+  border-bottom: 2px solid rgb(165, 165, 165);
   }
 
   .conversation:hover {
-    background-color: #3b86e8;
+    background-color: #4942E4;
     color: aliceblue;
     transform: scale(1.05);
     border-radius: 20px;
+    z-index: 100;
   }
   
   .conversationImg {
@@ -82,9 +94,28 @@
   .conversationName {
     font-weight: 500;
   }
-  
+
+  .input{
+    display: flex;
+    align-items: center;
+    /* justify-content: space-around; */
+    /* padding: 0px 5px; */
+    width: 385px;
+    height: 50px;
+    margin: 15px 10px;
+    font-size: large;
+    border: none;
+    border-bottom: 2px solid #086ef5;
+    outline: none;
+    background-color: lightgray;
+    /* margin-bottom: 40px; */
+  }
+
+
   @media screen and (max-width: 768px) {
     .conversationName {
       display: none;
     }
   } 
+
+  

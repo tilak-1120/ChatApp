@@ -19,13 +19,17 @@
   .messageText{
       padding: 10px;
       border-radius: 20px;
-      background-color: #1877f2;
+      background-color:#2F58CD ;
       color: white;
       max-width: 300px;
   }
   
   .messageBottom{
       font-size: 12px;
+      font-weight: 500;
+      margin-top: -10px;
+      margin-left: 50px;
+      margin-right: 10px;
   }
   
   .message.own{
@@ -35,6 +39,5 @@
   .message.own .messageText{
       background-color: rgb(245, 241, 241);
       color: white;
-      background-color: rgb(103, 103, 103);
-
+      background-color:  #4E31AA;
   }

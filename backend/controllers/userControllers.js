@@ -63,4 +63,21 @@ exports.getUser = async (req, res) => {
   }
 };
 
+exports.getUserDetail = async (req,res) => {
+  try{
+    const user = await User.findOne({username: req.params.usm});
+    res.status(200).json(user);
+  }catch(err){
+    res.status(500).json(err);
+  }
+}
 
+exports.updateAbout = async (req,res) => {
+  const {about, username} = req.body;
+  try{
+    const newuserdata = await User.updateOne({username: username}, {$set: {about: about}});
+    res.status(200).json(newuserdata);
+  }catch(err){  
+    res.status(500).json(err);
+  }
+}

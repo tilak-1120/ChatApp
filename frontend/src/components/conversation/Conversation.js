@@ -1,18 +1,27 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import "./conversation.css";
 import { userContext } from "../../App";
 import AddConversation from "../addConversation/AddConversation";
 import axios from "axios";
 
 function Conversation() {
-  const [conv, setConv] = useState([]);
-  const { usm, isOpen, setIsOpen, setConversationId, setotherName } = useContext(userContext);
+  const {
+    usm,
+    isOpen,
+    setIsOpen,
+    setConversationId,
+    conv,
+    setConv,
+    setOtherName,
+    setisProfileOpen,
+    isProfileOpen
+  } = useContext(userContext);
   const getConv = async (req, res) => {
     try {
       if (usm) {
         const response = await axios.get("/api/v1/getconv/" + usm);
         setConv(response.data);
-        console.log(response);
+        // console.log(response);
       }
     } catch (err) {
       console.log(err);
@@ -21,13 +30,15 @@ function Conversation() {
 
   useEffect(() => {
     getConv();
-  },[isOpen]);
+  }, [isOpen]);
 
   return isOpen ? (
     <AddConversation />
   ) : (
     <>
-      <div className="username">{usm}</div>
+      <div className="username"
+        onClick={()=>setisProfileOpen(!isProfileOpen)}
+      >{usm}</div>
       <div className="addconv">
         <label className="addconvLabel">Add Friends</label>
         <button className="addconvButton" onClick={() => setIsOpen(!isOpen)}>
@@ -35,16 +46,18 @@ function Conversation() {
         </button>
       </div>
 
+      {/* <input className="input" type="text" placeholder="Search friends...!!" /> */}
+
       {conv.map((key) => {
         return (
           <div
             className="conversation"
             onClick={() => {
               setConversationId(key._id);
-              const n = key.members.filter(elm=>{
+              const n = key.members.filter((elm) => {
                 return elm !== usm;
-              })
-              setotherName(n);
+              });
+              setOtherName(n);
             }}
           >
             <img

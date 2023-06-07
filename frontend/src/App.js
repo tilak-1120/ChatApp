@@ -13,7 +13,11 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [conversationId, setConversationId] = useState("");
   const [isDone, setIsDone] = useState(false);
-  const [otherName , setotherName] = useState("");
+  const [conv, setConv] = useState([]);
+  const [msg, setMsg] = useState([]);
+  const [otherName, setOtherName] = useState("");
+  const [usersOnline, setUsersOnline] = useState([]);
+  const [isProfileOpen , setisProfileOpen] = useState(false);
 
   return (
     <>
@@ -27,8 +31,16 @@ function App() {
           setConversationId,
           isDone,
           setIsDone,
+          conv,
+          setConv,
+          msg,
+          setMsg,
           otherName,
-          setotherName
+          setOtherName,
+          usersOnline,
+          setUsersOnline,
+          isProfileOpen,
+          setisProfileOpen
         }}
       >
         <BrowserRouter>

@@ -1,23 +1,30 @@
 .messenger {
-    height: calc(100vh - 70px);
-    display: flex;
-  }
-  
-  textarea{
-    resize: none;
-  }
+  height: 87.5vh;
+  display: flex;
+}
+
+textarea{
+  resize: none;
+  outline: none;
+}
+
+textarea:focus{
+  border: 1.5px solid #1877f2;
+  box-shadow: 1px 1px 5px #1877f2;
+}
 
   .chatMenu {
     flex: 3.5;
   }
-
+  
   .convs{
-    background-color: lightgray;
-    height: 89vh;
+    background-color: whitesmoke;
+    height: 87.5vh;
     /* border: 2px rgb(165, 165, 165) solid; */
     border-radius: 10px;
+    overflow-y: scroll;
   }
-  
+
   .chatMenuInput {
     width: 90%;
     padding: 10px 0;
@@ -33,7 +40,6 @@
     background-image: url("https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg");
     border-radius: 10px;
     border-top: 0;
-
   }
   
   .chatBoxWrapper {
@@ -66,11 +72,6 @@
     font-size: large;
   }
   
-  .chatMessageInput textarea :focus{
-    border: 2px solid #1877f2;
-    border-color: #1877f2;
-  }
-
 
   .chatSubmitButton {
     position: relative;
@@ -78,17 +79,18 @@
     top: -10px;
     width: 70px;
     height: 50px;
-    border: 2px solid #1877f2;
-    border-radius: 25px;
+    border: 2px solid #2F58CD;
+    border-radius: 10px;
     cursor: pointer;
-    background-color: #1877f2;
+    background-color: #2F58CD;
     color: white;
   }
 
   .chatBoxBottom button:hover{
     background-color: white;
-    color: #1877f2;
-    border: 2px solid #1877f2;
+    color: #2F58CD;
+    border: 2px solid #2F58CD;
+    border-radius: 25px;
     font-weight: 500;
   }
 
@@ -98,7 +100,7 @@
   
   .chatOnline {
     flex: 3;
-    background-color: lightgray;
+    background-color: whitesmoke;
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 10px;
@@ -121,7 +123,19 @@
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 20%;
+    top: 30%;
+    left: 22%;
+    font-size: 40px;
+    color: gray;
+    cursor: default;
+  }
+
+  .noConversationText2 {
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 40%;
+    left: 30%;
     font-size: 40px;
     color: gray;
     cursor: default;
@@ -153,15 +167,13 @@
     padding-left: 15px;
     position: absolute;
     z-index: 1;
-    height: 4rem;
-    /* width: 640px; */
-    /* background: lightgray; */
-    background-color: rgb(103, 103, 103);
+    height: 65px;
+    background-color: #2F58CD;
+    font-weight: 500;
     color: white;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    /* border-bottom: rgb(165, 165, 165) 3px solid; */
-    width: 44.2%;
+    width: 680px;
     margin: auto;
   }
 

@@ -1,9 +1,18 @@
 .chatOnlineFriend {
-    display: flex;
+    /* display: flex;
     align-items: center;
     font-weight: 500;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 10px; */
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    /* margin-top: 5px; */
+    margin: 10px 15px;
+    font-weight: 500;
+    transition: all ease-in-out 0.3s;
+    /* border-bottom: 2px solid rgb(165, 165, 165); */
   }
   
   .chatOnlineImgContainer {
