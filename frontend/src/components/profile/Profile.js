@@ -12,6 +12,8 @@ const Profile = () => {
     const newEditContent = useRef();
     const [newimg , setnewimg] = useState(false);
     const [imginp , setimginp] = useState(false);
+    const [files , setfiles] = useState(null);
+    const [profilePic , setprofilePic] = useState("");
 
     function handelClick(){
         axios.put("api/v1/updateUserAbout", {
@@ -20,24 +22,53 @@ const Profile = () => {
         })
     }
 
+    const handelUpload = () => {
+        const formdata = new FormData();
+        formdata.append('photo' , files);
+        formdata.append('username' , usm);
+        console.log(formdata);
+        axios.post("/api/v1/setProfilePicture", formdata)
+            .then(Response=>{
+                console.log(Response);
+            })
+    }
+
+    const removeProfilePicture = async (req,res) => {
+        const response = await axios.get("/api/v1/removeProfilePicture/"+usm);
+        console.log(response);
+    }
+
     useEffect(()=>{
-        if(usm){
+        console.log(usm);
             axios.get("/api/v1/getuser/"+usm)
             .then(Response=>{
-                // console.log(Response.data.about);
                 setabout(Response.data.about);
+                setprofilePic(Response.data.profilePicture);
             })
-        }
-    },[isEditOpen])
+    },[isEditOpen, newimg, setimginp]);
+
+    console.log("path is : " + profilePic);
+
 
     if(imginp){
         return (
             <div className='chooseImg'>
-                <input type='file' placeholder='Select File' className='input'/>
-                <button className='addButton' type='submit' onClick={(e)=>{
-                    setimginp(!imginp);
-                    setnewimg(!newimg);
-                }}>Done</button>
+                <input type='file' placeholder='Select File' className='input' name="photo"
+                    onChange={(event)=>setfiles(event.target.files[0])}
+                />
+                <div className='buttons'>
+                    <button className='addButton' type='submit' onClick={(e)=>{
+                        setimginp(!imginp);
+                        setnewimg(!newimg);
+                        handelUpload();
+                    }}>Done</button>
+                    <button className='backButton'
+                        onClick={()=>{
+                            setimginp(!imginp);
+                            setnewimg(!newimg)
+                        }}
+                    >Close</button>
+                </div>
             </div>
         )
     }
@@ -64,14 +95,21 @@ const Profile = () => {
         </div>
             <div className='prof-pic'>
                 <img 
-                    src="https://images.pexels.com/photos/3686769/pexels-photo-3686769.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" 
-                    alt="p"
+                    src={profilePic} 
+                    alt="Loading..."
                     className='profImg'
                     onClick={()=>setnewimg(!newimg)}
                 />
-                {newimg && <p className='newphoto' onClick={()=>setimginp(!imginp)}>
+                {newimg && <div style={{display:'flex',gap:'30px'}}><p className='newphoto' onClick={()=>setimginp(!imginp)}>
                     Add Profile Picture
-                </p>}
+                </p>
+                {profilePic !== "../uploads/def.jpg" && <p className='newphoto'
+                    onClick={()=>{
+                        setprofilePic("../uploads/def.jpg");
+                        removeProfilePicture();
+                    }}
+                >Remove Profile Picture</p>}
+                </div>}
             </div>
             <div className='usm'>
                 <h2>{usm}</h2>

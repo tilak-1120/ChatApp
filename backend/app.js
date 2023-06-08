@@ -3,8 +3,10 @@ const app = express();
 
 // Middlewares
 app.use(express.json());
-const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+app.use('/uploads' , express.static(__dirname+'/uploads'));
+
+// const multer = require('multer');
+// const upload = multer({ dest: 'uploads/' });
 
 const userRoute = require("./routes/userRoutes");
 const conversationRoute = require("./routes/conversationRoutes");

@@ -26,6 +26,20 @@
   background-color: rgb(168, 185, 200);
   color: #4942E4;
 }
+.refresh{
+  width: 10%;
+  margin: auto;
+  text-align: center;
+  transition: all ease-in-out 0.35s;
+  margin-top: 10px;
+  border-bottom: 2px solid gray;
+  border-radius: 50%;
+  margin-bottom: -5px;
+}
+.refresh:hover{
+  transform: scale(1.03);
+  border-radius: 0;
+}
 
 .addconv{
   display: flex;

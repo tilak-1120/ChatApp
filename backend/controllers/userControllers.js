@@ -1,6 +1,7 @@
 const User = require("../models/userSchema");
 const bcrypt = require("bcrypt");
 
+
 exports.registerUser = async (req, res) => {
   try {
     const userExist = await User.findOne({ username: req.body.username });
@@ -20,7 +21,6 @@ exports.registerUser = async (req, res) => {
       email: req.body.email,
       password: hashedPassword,
     });
-
     //save user and respond
     const user = await newUser.save();
     res.status(200).json(user);
@@ -43,7 +43,7 @@ exports.loginUser = async (req, res) => {
       ? alert("Login Unsuccessfull Invalid Credentials")
       : res.status(200).json(user);
   } catch (err) {
-    res.status(500).json(err);
+    // res.status(500).json(err);
   }
 };
 
@@ -81,3 +81,13 @@ exports.updateAbout = async (req,res) => {
     res.status(500).json(err);
   }
 }
+
+exports.removeProfilePicture = async (req,res) => {
+  try{
+    const response = await User.updateOne({username: req.params.usm},{$set: {profilePicture: '../uploads/def.jpg'}});
+    res.status(200).json(response);
+  }catch(err){
+    res.status(500).json(err);
+  }
+}
+
