@@ -14,11 +14,17 @@ function Conversation() {
     setConv,
     setOtherName,
     setisProfileOpen,
-    isProfileOpen
+    isProfileOpen,
+    usersOnline,
   } = useContext(userContext);
 
   const [refresh , setRefresh] = useState(Boolean);
+  const [photos , setphotos] = useState([]);
 
+  var names =[];
+  
+  var online = usersOnline.filter(user => names.includes(user.userName));
+  // console.log(online);
 
   const getConv = async (req, res) => {
     try {
@@ -32,10 +38,23 @@ function Conversation() {
     }
   };
 
+  const getPhotos = async (req,res) => {
+    try{
+      names.map(async elm => {
+        const resposnse = await axios.get("/api/v1/getuser/"+ elm);
+        setphotos(prev=>{
+          return [...prev , resposnse.data.profilePicture]
+        })
+      })
+    }catch(err){
+
+    }
+  }
 
   useEffect(() => {
     getConv();
-  }, [isOpen, refresh]);
+    getPhotos();
+  }, [isOpen, refresh, setphotos]);
 
   return isOpen ? (
     <AddConversation />
@@ -52,7 +71,10 @@ function Conversation() {
       </div>
       <div className="refresh">
         <button className="addconvButton" style={{paddingTop:'10px',borderRadius:'100%',backgroundColor:'whitesmoke'}}
-          onClick={()=>setRefresh(!refresh)}
+          onClick={()=>{
+            setRefresh(!refresh);
+            setphotos([])
+          }}
         >
           <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><path d="M386.3 160H336c-17.7 0-32 14.3-32 32s14.3 32 32 32H464c17.7 0 32-14.3 32-32V64c0-17.7-14.3-32-32-32s-32 14.3-32 32v51.2L414.4 97.6c-87.5-87.5-229.3-87.5-316.8 0s-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3s163.8-62.5 226.3 0L386.3 160z"/></svg>
         </button>
@@ -61,7 +83,10 @@ function Conversation() {
 
       {/* <input className="input" type="text" placeholder="Search friends...!!" /> */}
 
-      {conv.map((key) => {
+      {conv.map((key,index) => {
+        names.push(key.members.filter(elm=>{
+          return elm !== usm;
+        }))
         return (
           <div
             className="conversation"
@@ -75,12 +100,13 @@ function Conversation() {
           >
             <img
               className="conversationImg"
-              src="https://images.pexels.com/photos/3686769/pexels-photo-3686769.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+              src={photos[index]}
               alt=""
             />
             <span className="conversationName">
               {key.members[1] === usm ? key.members[0] : key.members[1]}
             </span>
+
           </div>
         );
       })}
