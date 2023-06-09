@@ -17,6 +17,7 @@ function App() {
   const [msg, setMsg] = useState([]);
   const [otherName, setOtherName] = useState("");
   const [usersOnline, setUsersOnline] = useState([]);
+  const [isProfileOpen, setisProfileOpen] = useState(false);
 
   return (
     <>
@@ -38,6 +39,8 @@ function App() {
           setOtherName,
           usersOnline,
           setUsersOnline,
+          isProfileOpen,
+          setisProfileOpen,
         }}
       >
         <BrowserRouter>

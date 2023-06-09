@@ -38,6 +38,14 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    about: {
+      type: String,
+      default: "",
+    },
+    profilePicture: {
+      type: String,
+      default: "../uploads/default.jpg",
+    },
   },
   { timestamps: true }
 );

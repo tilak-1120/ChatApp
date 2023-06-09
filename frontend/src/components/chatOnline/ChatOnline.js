@@ -1,14 +1,17 @@
 import React, { useContext } from "react";
 import "./chatOnline.css";
 import { userContext } from "../../App";
+import Profile from "../profile/Profile";
 
 function ChatOnline() {
-  const { usersOnline, usm } = useContext(userContext);
+  const { usersOnline, usm, isProfileOpen } = useContext(userContext);
   const users = usersOnline.filter((key) => {
     return key.userName !== "" && key.userName !== usm;
   });
   console.log(usersOnline);
-  return (
+  return isProfileOpen ? (
+    <Profile />
+  ) : (
     <>
       <div className="chatOnline">
         <div className="addconv">

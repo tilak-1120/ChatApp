@@ -1,0 +1,146 @@
+.top{
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  overflow-y: scroll;
+}
+
+.usm{
+  text-align: center;
+  font-size: 25px;
+  margin-top: -10px;
+}
+
+.closebar{
+height: 40px;
+margin: 0px;
+margin-top: -10px;
+padding: 10px;
+display: flex;
+justify-content: flex-end;
+font-size: xx-large;
+}
+
+.prof-pic{
+  /* background-color: red; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  align-self: center;
+  justify-content: center;
+}
+
+.profImg {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid gray;
+}
+
+.about{
+  background-color: lightgray;
+  margin: auto;
+  border-radius: 10px;
+  color: black;
+  padding-left: 40px;
+  font-size: 18px;
+  font-weight: 500;
+  width: 318px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.aboutContent{
+  display: flex;
+  width: 80%;
+  flex-wrap: wrap;
+  overflow: hidden;
+  width: fit-content;
+  min-height:auto;
+}
+
+.editAboutmain{
+  justify-content: "center"; 
+  align-items: center;
+}
+
+.editAbout{
+  font-size: 15px;
+  margin: auto;
+  margin-top: 0.6rem;
+}
+
+.editAbout:hover{
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.editButton{
+  margin: 5px 128px;
+  height: 40px;
+  width: 100px;
+  border-radius: 30px;
+  background-color: #4942E4;
+  color: aliceblue;
+  border: 2px solid #4942E4;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all ease-in-out 0.35s;
+}
+
+.editButton:hover{
+  background-color: aliceblue;
+  color: #4942E4;
+  border-radius: 10px;
+}
+
+.abtlabel{
+  margin-left: 10px;
+  font-weight: 600;
+}
+
+.pencil{
+  margin: auto;
+  padding-right: 20px;
+}
+
+.p{
+  width: 10%;
+  text-align: center;
+  align-items: center;
+  align-self: center;
+  padding-left: 10px;
+  cursor: pointer;
+}
+
+.newphoto{
+cursor: pointer;
+/* background-color: #4942E4; */
+border: 2px solid aliceblue;
+color: #4942E4;
+font-weight: 600;
+padding: 2px;
+/* border-radius: 20px; */
+font-size: 15px;
+margin: 10px 0px 5px 0px;
+transition: all ease-in-out 0.5s;
+}
+
+.newphoto:hover{
+  /* background-color: aliceblue; */
+  color: #4942E4;
+  border-bottom: 2px solid #4942E4;
+}
+
+.aboutPara{
+  color: "gray";
+  margin: "0";
+  font-weight: "400";
+}
+
+.closeButton{
+  cursor: pointer;
+}

@@ -9,6 +9,8 @@ function AddConversation() {
 
   const addConv = async (req, res) => {
     try {
+      console.log(receiverUser.current.value);
+
       const findUser = await axios.get(
         "/api/v1/getuser/" + receiverUser.current.value
       );
@@ -16,6 +18,7 @@ function AddConversation() {
       if (findUser.status === 404) {
         alert("Invalid Username");
       } else if (findUser) {
+        console.log("Inside findUser");
         let convUsers = [];
 
         conv.map((key) => {
@@ -26,17 +29,19 @@ function AddConversation() {
             }
           });
         });
-        // console.log(convUsers);
+        console.log(convUsers);
         convUsers.find((user) => user === receiverUser.current.value) &&
           alert("This friend already exists");
       } else {
+        console.log("Inside post conv");
+
         const response = await axios.post("/api/v1/addconv", {
           senderUser: usm,
           receiverUser: receiverUser.current.value,
         });
 
         if (response) {
-          // console.log(response.data._id);
+          console.log(response.data._id);
           alert("New Friend Added Successfully");
           setIsOpen(false);
         } else {

@@ -47,7 +47,7 @@ function Messenger() {
   useEffect(() => {
     arrivalMsg && setMsg((prev) => [...prev, arrivalMsg]);
 
-    console.log(arrivalMsg);
+    // console.log(arrivalMsg);
   }, [arrivalMsg, setMsg]);
 
   useEffect(() => {
@@ -117,7 +117,7 @@ function Messenger() {
     e.preventDefault();
     if (newMessage.current.value === "") {
       alert("Can't send empty message..!!!");
-      document.getElementById("deep").focus();
+      document.getElementById("sendBox").focus();
     } else {
       sendMessage();
     }
@@ -159,7 +159,7 @@ function Messenger() {
             {conversationId && (
               <div className="chatBoxBottom">
                 <textarea
-                  id="deep"
+                  id="sendBox"
                   className="chatMessageInput"
                   placeholder="Send a chat..!"
                   onChange={() => {

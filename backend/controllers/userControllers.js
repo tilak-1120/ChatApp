@@ -1,5 +1,6 @@
 const User = require("../models/userSchema");
 const bcrypt = require("bcrypt");
+const fs = require("fs");
 
 exports.registerUser = async (req, res) => {
   try {
@@ -60,5 +61,56 @@ exports.getUser = async (req, res) => {
     }
   } catch (err) {
     console.log(err);
+  }
+};
+
+exports.updateAbout = async (req, res) => {
+  try {
+    const { about, username } = req.body;
+
+    const user = await User.findOne({ username: username });
+
+    if (!user) {
+      return res.status(404).json("User does not exists");
+    }
+
+    const updateAbout = await User.updateOne(
+      { username: username },
+      { $set: { about: about } }
+    );
+
+    res.status(200).json(updateAbout);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+exports.setProfilePic = async (req, res) => {
+  try {
+    const { originalname, path } = req.file;
+    const parts = originalname.split(".");
+    const extention = parts[parts.length - 1];
+    const newpath = path + "." + extention;
+    fs.renameSync(path, newpath);
+
+    const Response = await User.updateOne(
+      { username: req.body.username },
+      { $set: { profilePicture: newpath } }
+    );
+    res.status(200).json("Profile picture updated");
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+exports.removeProfilePicture = async (req, res) => {
+  try {
+    const response = await User.updateOne(
+      { username: req.params.username },
+      { $set: { profilePicture: "../uploads/default.jpg" } }
+    );
+    res.status(200).json(response);
+  } catch (err) {
+    res.status(500).json(err);
   }
 };

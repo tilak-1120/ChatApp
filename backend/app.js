@@ -3,6 +3,7 @@ const app = express();
 
 // Middlewares
 app.use(express.json());
+app.use("/uploads", express.static(__dirname + "/uploads"));
 
 const userRoute = require("./routes/userRoutes");
 const conversationRoute = require("./routes/conversationRoutes");

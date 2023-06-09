@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./topbar.css";
 import { useNavigate } from "react-router-dom";
+import { userContext } from "../../App";
 
 function Topbar() {
   const navigate = useNavigate();
+  const { setUsm } = useContext(userContext);
 
   const signOut = () => {
     navigate("/");
+    setUsm("");
   };
 
   const handleClick = (e) => {
