@@ -6,6 +6,8 @@ import { format } from "timeago.js";
 
 function Message() {
   const { conversationId, usm, isDone, msg, setMsg } = useContext(userContext);
+  const [senderImg, setSenderImg] = useState("");
+  const [recieverImg, setRecieverImg] = useState("");
 
   const getMessages = async (req, res) => {
     try {
@@ -19,8 +21,44 @@ function Message() {
     }
   };
 
+  const getImages = async (req, res) => {
+    try {
+      const conversation = await axios.get(
+        "/api/v1/getspecificconv/" + conversationId
+      );
+
+      // console.log(conversation);
+      const sender = conversation.data.members[0];
+      const receiver = conversation.data.members[1];
+      console.log("sender" + sender);
+
+      if (sender === usm) {
+        const senderImage = await axios.get("/api/v1/getuser/" + sender);
+        console.log(senderImage);
+        setSenderImg(senderImage.data.profilePicture);
+      } else {
+        const receiverImage = await axios.get("/api/v1/getuser/" + sender);
+        console.log(receiverImage);
+        setRecieverImg(receiverImage.data.profilePicture);
+      }
+
+      if (receiver === usm) {
+        const senderImage = await axios.get("/api/v1/getuser/" + receiver);
+        console.log(senderImage);
+        setSenderImg(senderImage.data.profilePicture);
+      } else {
+        const receiverImage = await axios.get("/api/v1/getuser/" + receiver);
+        console.log(receiverImage);
+        setRecieverImg(receiverImage.data.profilePicture);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     getMessages();
+    getImages();
   }, [conversationId, isDone]);
 
   return (
@@ -31,7 +69,7 @@ function Message() {
             <div className="messageTop">
               <img
                 className="messageImg"
-                src="https://images.pexels.com/photos/3686769/pexels-photo-3686769.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+                src={key.sender === usm ? senderImg : recieverImg}
                 alt=""
               />
               <p className="messageText">{key.text}</p>

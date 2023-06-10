@@ -67,7 +67,7 @@ function Conversation() {
 
   useEffect(() => {
     getUserProfilePicture();
-  }, []);
+  }, [isProfileOpen]);
 
   return isOpen ? (
     <AddConversation />

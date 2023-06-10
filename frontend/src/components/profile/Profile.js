@@ -44,7 +44,7 @@ const Profile = () => {
         setProfilePic(response.data.profilePicture);
       });
     }
-  }, [isEditOpen, newimg, setImgInp, handelUpload, setNewImg]);
+  }, [isEditOpen, newimg, setImgInp, handelUpload, setNewImg, about, setabout]);
 
   // console.log("path is : " + profilePic);
 
