@@ -6,6 +6,16 @@ const io = require("socket.io")(5000, {
 
 console.log("Socket Server running at port 5000");
 let users = [];
+let groupUsers = [];
+
+const addGroupUsers = (userName, socketId) => {
+  !groupUsers.some((user) => user.userName === userName) &&
+    groupUsers.push({ userName, socketId });
+};
+
+const removeGroupUsers = (socketId) => {
+  groupUsers = groupUsers.filter((user) => user.socketId !== socketId);
+};
 
 const addUser = (userName, socketId) => {
   !users.some((user) => user.userName === userName) &&
@@ -16,9 +26,9 @@ const removeUser = (socketId) => {
   users = users.filter((user) => user.socketId !== socketId);
 };
 
-const getUser = (userName) => {
-  return users.find((user) => userName === user.userName);
-};
+// const getUser = (userName) => {
+//   return users.find((user) => userName === user.userName);
+// };
 
 io.on("connection", (socket) => {
   console.log("User Connected");
@@ -40,5 +50,25 @@ io.on("connection", (socket) => {
     console.log("User Disconnected");
     removeUser(socket.id);
     io.emit("getUsers", users);
+  });
+
+  socket.on("addGroupUsers", (userName) => {
+    addGroupUsers(userName, socket.id);
+    io.emit("getGroupUsers", groupUsers);
+  });
+
+  socket.on("sendGroupMessage", ({ sender, text }) => {
+    // const user = getUser(receiver);
+    // console.log(receiver);
+    io.emit("getGroupMessage", {
+      sender,
+      text,
+    });
+  });
+
+  socket.on("groupDisconnect", () => {
+    console.log("Group Disconnected");
+    removeGroupUsers(socket.id);
+    io.emit("getGroupUsers", groupUsers);
   });
 });

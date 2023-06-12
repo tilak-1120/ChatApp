@@ -18,6 +18,14 @@ const GroupSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    groupProfile: {
+      type: String,
+      default: "../uploads/groupDefault.png",
+    },
+    groupAbout: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );

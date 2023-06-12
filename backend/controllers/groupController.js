@@ -33,7 +33,7 @@ exports.updateGroup = async (req, res) => {
 
     const update = await Group.updateOne(
       { groupname: req.params.groupname },
-      { $set: { groupmembers: req.body.groupmembers } },
+      { $push: { groupmembers: req.body.groupmembers } },
       { new: true }
     );
     res.status(200).json(update);
@@ -56,6 +56,22 @@ exports.getGroups = async (req, res) => {
       return res.status(404).json("Groups not found");
     }
     res.status(200).json(findGroups);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+exports.getSpecificGroup = async (req, res) => {
+  try {
+    const findGroup = await Group.find({
+      groupname: req.params.groupname,
+    });
+
+    if (!findGroup) {
+      console.log("Group not found");
+      return res.status(404).json("Group not found");
+    }
+    res.status(200).json(findGroup);
   } catch (err) {
     res.status(500).json(err);
   }

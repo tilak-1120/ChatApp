@@ -93,10 +93,14 @@ exports.setProfilePic = async (req, res) => {
     const newpath = path + "." + extention;
     fs.renameSync(path, newpath);
 
-    const Response = await User.updateOne(
+    const response = await User.updateOne(
       { username: req.body.username },
       { $set: { profilePicture: newpath } }
     );
+
+    if (!response) {
+      return console.log("Can't update profilepic");
+    }
     res.status(200).json("Profile picture updated");
   } catch (err) {
     res.status(500).json(err);

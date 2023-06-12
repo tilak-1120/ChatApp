@@ -6,16 +6,16 @@
   padding: 20px;
   font-size: 30px;
   font-weight: 700;
-  width: 402px;
+  width: 90%;
   border-radius: 10px;
   color: #1877f2;
+  margin: auto;
   margin-bottom: 20px;
   background-color: #4942E4;
   color: white;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   height: 40px;
-  /* margin: auto; */
   transition: all ease-in-out 0.35s;
 }
 

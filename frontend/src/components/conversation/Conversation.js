@@ -15,16 +15,15 @@ function Conversation() {
     setOtherName,
     setisProfileOpen,
     isProfileOpen,
-    usersOnline,
+    refresh,
+    setRefresh,
   } = useContext(userContext);
 
-  const [refresh, setRefresh] = useState(Boolean);
   const [photos, setPhotos] = useState([]);
   const [usmimg, setUsmImg] = useState("");
+  const [grp, setGrp] = useState([]);
 
   var names = [];
-
-  var online = usersOnline.filter((user) => names.includes(user.userName));
 
   const getConv = async (req, res) => {
     try {
@@ -32,6 +31,18 @@ function Conversation() {
         const response = await axios.get("/api/v1/getconv/" + usm);
         setConv(response.data);
         // console.log(response);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const getGroups = async (req, res) => {
+    try {
+      if (usm) {
+        const response = await axios.get("/api/v1/getgroups/" + usm);
+        setGrp(response.data);
+        console.log(response);
       }
     } catch (err) {
       console.log(err);
@@ -63,6 +74,13 @@ function Conversation() {
   useEffect(() => {
     getConv();
     getPhotos();
+    getGroups();
+  }, []);
+
+  useEffect(() => {
+    getConv();
+    getPhotos();
+    getGroups();
   }, [isOpen, refresh, setPhotos]);
 
   useEffect(() => {
@@ -107,6 +125,15 @@ function Conversation() {
       </div>
 
       {/* <input className="input" type="text" placeholder="Search friends...!!" /> */}
+
+      {grp.map((key) => {
+        return (
+          <div className="conversation">
+            <img className="conversationImg" src={key.groupProfile} alt="" />
+            <span className="conversationName">{key.groupname}</span>
+          </div>
+        );
+      })}
 
       {conv.map((key, index) => {
         names.push(

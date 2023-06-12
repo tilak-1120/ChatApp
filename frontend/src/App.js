@@ -18,6 +18,7 @@ function App() {
   const [otherName, setOtherName] = useState("");
   const [usersOnline, setUsersOnline] = useState([]);
   const [isProfileOpen, setisProfileOpen] = useState(false);
+  const [refresh, setRefresh] = useState(Boolean);
 
   return (
     <>
@@ -41,6 +42,8 @@ function App() {
           setUsersOnline,
           isProfileOpen,
           setisProfileOpen,
+          refresh,
+          setRefresh,
         }}
       >
         <BrowserRouter>

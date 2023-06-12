@@ -13,6 +13,7 @@ function Messenger() {
   const [newMsg, setNewMsg] = useState("");
   const [receiver, setReceiver] = useState();
   const [arrivalMsg, setArrivalMsg] = useState(null);
+  const [grpMsg, setGrpMsg] = useState(null);
 
   const {
     usm,
@@ -22,6 +23,8 @@ function Messenger() {
     setMsg,
     otherName,
     setUsersOnline,
+    grp,
+    setGrp,
   } = useContext(userContext);
 
   const navigate = useNavigate();
@@ -38,6 +41,13 @@ function Messenger() {
         createdAt: Date.now(),
       });
     });
+    socket.current.on("getGroupMessage", (data) => {
+      setGrpMsg({
+        sender: data.sender,
+        text: data.text,
+        createdAt: Date.now(),
+      });
+    });
   }, []);
 
   useEffect(() => {
@@ -46,9 +56,9 @@ function Messenger() {
 
   useEffect(() => {
     arrivalMsg && setMsg((prev) => [...prev, arrivalMsg]);
-
+    grpMsg && setMsg((prev) => [...prev, grpMsg]);
     // console.log(arrivalMsg);
-  }, [arrivalMsg, setMsg]);
+  }, [arrivalMsg, setMsg, grpMsg, setGrpMsg]);
 
   useEffect(() => {
     // setSocket(io("ws://localhost:5000"));
@@ -60,6 +70,8 @@ function Messenger() {
       setUsersOnline(users);
       console.log(users);
     });
+
+    socket.current.emit("addGroupUsers", usm); // need to be changed
   }, [usm]);
 
   const sendMessage = async (req, res) => {
@@ -77,6 +89,29 @@ function Messenger() {
       socket.current.emit("sendMessage", {
         sender: usm,
         receiver: receiver,
+        text: newMsg,
+      });
+
+      setNewMsg("");
+      newMessage.current.value = "";
+      setIsDone(!isDone);
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+      setNewMsg("");
+    }
+  };
+
+  const sendGroupMessage = async (req, res) => {
+    try {
+      const response = await axios.post("/api/v1/addgrpmsg/", {
+        groupname: grp, // on hold
+        sender: usm,
+        text: newMsg,
+      });
+
+      socket.current.emit("sendMessage", {
+        sender: usm,
         text: newMsg,
       });
 
