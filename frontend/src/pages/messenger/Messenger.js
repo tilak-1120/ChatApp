@@ -8,12 +8,15 @@ import Message from "../../components/message/Message";
 import ChatOnline from "../../components/chatOnline/ChatOnline";
 import Topbar from "../../components/topbar/Topbar";
 import { io } from "socket.io-client";
+import OtherProfile from "../../components/otherProfile/OtherProfile";
 
 function Messenger() {
   const [newMsg, setNewMsg] = useState("");
-  const [usersName, setUsersName] = useState([]);
-  const [arrivalMsg, setArrivalMsg] = useState(null);
   const [receiver, setReceiver] = useState();
+  const [arrivalMsg, setArrivalMsg] = useState(null);
+  const [grpMsg, setGrpMsg] = useState(null);
+  const [isOtherProfileOpen , setisOtherProfileOpen] = useState(false);
+
   const {
     usm,
     conversationId,
@@ -22,7 +25,12 @@ function Messenger() {
     setMsg,
     otherName,
     setUsersOnline,
+    grp,
+    setGrp,
+    isProfileOpen,
+    setisProfileOpen,
   } = useContext(userContext);
+
   const navigate = useNavigate();
   const scrollRef = useRef();
   const newMessage = useRef();
@@ -37,6 +45,13 @@ function Messenger() {
         createdAt: Date.now(),
       });
     });
+    socket.current.on("getGroupMessage", (data) => {
+      setGrpMsg({
+        sender: data.sender,
+        text: data.text,
+        createdAt: Date.now(),
+      });
+    });
   }, []);
 
   useEffect(() => {
@@ -45,9 +60,9 @@ function Messenger() {
 
   useEffect(() => {
     arrivalMsg && setMsg((prev) => [...prev, arrivalMsg]);
-
-    console.log(arrivalMsg);
-  }, [arrivalMsg, setMsg]);
+    grpMsg && setMsg((prev) => [...prev, grpMsg]);
+    // console.log(arrivalMsg);
+  }, [arrivalMsg, setMsg, grpMsg, setGrpMsg]);
 
   useEffect(() => {
     // setSocket(io("ws://localhost:5000"));
@@ -59,6 +74,8 @@ function Messenger() {
       setUsersOnline(users);
       console.log(users);
     });
+
+    socket.current.emit("addGroupUsers", usm); // need to be changed
   }, [usm]);
 
   const sendMessage = async (req, res) => {
@@ -89,6 +106,29 @@ function Messenger() {
     }
   };
 
+  const sendGroupMessage = async (req, res) => {
+    try {
+      const response = await axios.post("/api/v1/addgrpmsg/", {
+        groupname: grp, // on hold
+        sender: usm,
+        text: newMsg,
+      });
+
+      socket.current.emit("sendMessage", {
+        sender: usm,
+        text: newMsg,
+      });
+
+      setNewMsg("");
+      newMessage.current.value = "";
+      setIsDone(!isDone);
+      console.log(response);
+    } catch (err) {
+      console.log(err);
+      setNewMsg("");
+    }
+  };
+
   useEffect(() => {
     scrollRef?.current.scrollIntoView({ behavior: "smooth", block: "end" });
     // const s = scrollRef.current;
@@ -104,7 +144,7 @@ function Messenger() {
         const n = response.data.members.filter((elm) => {
           return elm !== usm;
         });
-        console.log(n);
+        // console.log(n);
         setReceiver(n);
       }
     } catch (err) {
@@ -116,7 +156,7 @@ function Messenger() {
     e.preventDefault();
     if (newMessage.current.value === "") {
       alert("Can't send empty message..!!!");
-      document.getElementById("deep").focus();
+      document.getElementById("sendBox").focus();
     } else {
       sendMessage();
     }
@@ -135,9 +175,17 @@ function Messenger() {
             </div>
           </div>
         </div>
-
+        
         <div className="chatBox">
-          {conversationId && <div className="selectedUser">{otherName}</div>}
+          {conversationId && <div 
+            onClick={()=>setisProfileOpen({
+              state: true,
+              profile: "other"
+            })}
+            className="selectedUser"
+            style={{opacity: isProfileOpen.state && isProfileOpen.profile==="other" && "0.3"}}
+          >
+          {otherName}</div>}
           <div className="chatBoxWrapper">
             <div className="chatBoxTop">
               <div className="msgBox" ref={scrollRef}>
@@ -158,7 +206,7 @@ function Messenger() {
             {conversationId && (
               <div className="chatBoxBottom">
                 <textarea
-                  id="deep"
+                  id="sendBox"
                   className="chatMessageInput"
                   placeholder="Send a chat..!"
                   onChange={() => {
@@ -176,7 +224,7 @@ function Messenger() {
 
         <div className="chatOnline">
           <div className="chatOnlineWrapper">
-            <ChatOnline users={usersName} />
+            <ChatOnline />
           </div>
         </div>
       </div>

@@ -1,4 +1,3 @@
-const { strict } = require("assert");
 const mongoose = require("mongoose");
 const validator = require("validator");
 
@@ -41,12 +40,12 @@ const UserSchema = new mongoose.Schema(
     },
     about: {
       type: String,
-      default: ""
+      default: "",
     },
     profilePicture: {
       type: String,
-      default: "../uploads/def.jpg"
-    }
+      default: "../uploads/default.jpg",
+    },
   },
   { timestamps: true }
 );

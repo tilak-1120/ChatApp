@@ -1,6 +1,6 @@
 const User = require("../models/userSchema");
 const bcrypt = require("bcrypt");
-
+const fs = require("fs");
 
 exports.registerUser = async (req, res) => {
   try {
@@ -21,9 +21,10 @@ exports.registerUser = async (req, res) => {
       email: req.body.email,
       password: hashedPassword,
     });
+
     //save user and respond
     const user = await newUser.save();
-    res.status(200).json(user);
+    // res.status(200).json(user);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -43,13 +44,13 @@ exports.loginUser = async (req, res) => {
       ? alert("Login Unsuccessfull Invalid Credentials")
       : res.status(200).json(user);
   } catch (err) {
-    // res.status(500).json(err);
+    res.status(500).json(err);
   }
 };
 
 exports.getUser = async (req, res) => {
   try {
-    const user = await User.findOne({ username: req.body.username });
+    const user = await User.findOne({ username: req.params.username });
     // !user ? alert("Username doesn't exists") : res.status(200).json(user);
 
     if (user) {
@@ -63,31 +64,57 @@ exports.getUser = async (req, res) => {
   }
 };
 
-exports.getUserDetail = async (req,res) => {
-  try{
-    const user = await User.findOne({username: req.params.usm});
-    res.status(200).json(user);
-  }catch(err){
+exports.updateAbout = async (req, res) => {
+  try {
+    const { about, username } = req.body;
+
+    const user = await User.findOne({ username: username });
+
+    if (!user) {
+      return res.status(404).json("User does not exists");
+    }
+
+    const updateAbout = await User.updateOne(
+      { username: username },
+      { $set: { about: about } }
+    );
+
+    res.status(200).json(updateAbout);
+  } catch (err) {
     res.status(500).json(err);
   }
-}
+};
 
-exports.updateAbout = async (req,res) => {
-  const {about, username} = req.body;
-  try{
-    const newuserdata = await User.updateOne({username: username}, {$set: {about: about}});
-    res.status(200).json(newuserdata);
-  }catch(err){  
+exports.setProfilePic = async (req, res) => {
+  try {
+    const { originalname, path } = req.file;
+    const parts = originalname.split(".");
+    const extention = parts[parts.length - 1];
+    const newpath = path + "." + extention;
+    fs.renameSync(path, newpath);
+
+    const response = await User.updateOne(
+      { username: req.body.username },
+      { $set: { profilePicture: newpath } }
+    );
+
+    if (!response) {
+      return console.log("Can't update profilepic");
+    }
+    res.status(200).json("Profile picture updated");
+  } catch (err) {
     res.status(500).json(err);
   }
-}
+};
 
-exports.removeProfilePicture = async (req,res) => {
-  try{
-    const response = await User.updateOne({username: req.params.usm},{$set: {profilePicture: '../uploads/def.jpg'}});
+exports.removeProfilePicture = async (req, res) => {
+  try {
+    const response = await User.updateOne(
+      { username: req.params.username },
+      { $set: { profilePicture: "../uploads/default.jpg" } }
+    );
     res.status(200).json(response);
-  }catch(err){
+  } catch (err) {
     res.status(500).json(err);
   }
-}
-
+};

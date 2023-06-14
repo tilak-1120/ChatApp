@@ -1,19 +1,15 @@
 const router = require("express").Router();
-const User = require('../models/userSchema')
 const {
   registerUser,
   loginUser,
   getUser,
-  getUserDetail,
   updateAbout,
+  setProfilePic,
   removeProfilePicture,
 } = require("../controllers/userControllers");
 
-const fs = require('fs');
-const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
-var type = upload.single('photo');
-
+const upload = require("multer")({ dest: "uploads/" });
+var type = upload.single("photo");
 
 // New User
 router.post("/register", registerUser);
@@ -22,31 +18,15 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 
 // Get User
-router.post("/getuser", upload.single('file') , getUser);
+router.get("/getuser/:username", getUser);
 
-//get user
-router.get("/getuser/:usm" , getUserDetail)
+// Update About Section
+router.put("/updateabout", updateAbout);
 
-//Upadating users About content
-router.put("/updateUserAbout" , updateAbout);
+// Set Profile Pic
+router.post("/setProfilePicture", type, setProfilePic);
 
-//profile picture
-router.post("/setProfilePicture" , type , async(req,res)=>{
-  const{originalname,path} = req.file;
-  const parts = originalname.split('.');
-  const extention = parts[parts.length -1];
-  const newpath = path +'.'+ extention;
-  fs.renameSync(path , newpath);
-  try{
-    const Response = await User.updateOne({username: req.body.username},{$set: {profilePicture: newpath}});
-    res.status(200);
-  }catch(err){
-    res.status(500).json(err);
-  }
-})
-
-//remove profile picture
-router.get("/removeProfilePicture/:usm" , removeProfilePicture)
-
+// Remove Profile Pic
+router.get("/removeProfilePicture/:username", removeProfilePicture);
 
 module.exports = router;
