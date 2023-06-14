@@ -77,6 +77,19 @@ exports.getSpecificGroup = async (req, res) => {
   }
 };
 
+exports.editGroupMember = async (req, res) => {
+  try {
+    const findGroup = await Group.updateOne(
+      { groupname: req.params.groupname },
+      { $pull: { groupmembers: req.params.membername } },
+      { new: true }
+    );
+    res.status(200).json(findGroup);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
 exports.deleteGroup = async (req, res) => {
   try {
     const findGroup = await Group.findOne({ groupname: req.params.groupname });

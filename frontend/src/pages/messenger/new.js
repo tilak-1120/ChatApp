@@ -8,12 +8,14 @@ import Message from "../../components/message/Message";
 import ChatOnline from "../../components/chatOnline/ChatOnline";
 import Topbar from "../../components/topbar/Topbar";
 import { io } from "socket.io-client";
+import OtherProfile from "../../components/otherProfile/OtherProfile";
 
 function Messenger() {
   const [newMsg, setNewMsg] = useState("");
   const [receiver, setReceiver] = useState();
   const [arrivalMsg, setArrivalMsg] = useState(null);
   const [grpMsg, setGrpMsg] = useState(null);
+  const [isOtherProfileOpen, setisOtherProfileOpen] = useState(false);
 
   const {
     usm,
@@ -23,9 +25,10 @@ function Messenger() {
     setMsg,
     otherName,
     setUsersOnline,
+    grp,
+    setGrp,
     isProfileOpen,
-    setIsProfileOpen,
-    setGroupMessage,
+    setisProfileOpen,
   } = useContext(userContext);
 
   const navigate = useNavigate();
@@ -53,13 +56,13 @@ function Messenger() {
 
   useEffect(() => {
     getMembersArray();
-  }, [conversationId.id]);
+  }, [conversationId]);
 
   useEffect(() => {
     arrivalMsg && setMsg((prev) => [...prev, arrivalMsg]);
-    grpMsg && setGroupMessage((prev) => [...prev, grpMsg]);
+    grpMsg && setMsg((prev) => [...prev, grpMsg]);
     // console.log(arrivalMsg);
-  }, [arrivalMsg, setMsg, grpMsg, setGrpMsg, setGroupMessage]);
+  }, [arrivalMsg, setMsg, grpMsg, setGrpMsg]);
 
   useEffect(() => {
     // setSocket(io("ws://localhost:5000"));
@@ -73,15 +76,16 @@ function Messenger() {
     });
 
     socket.current.emit("addGroupUsers", usm); // need to be changed
-    socket.current.on("getGroupUsers", (users) => {
-      console.log(users);
-    });
-  }, [usm, conversationId.type]);
+  }, [usm]);
 
   const sendMessage = async (req, res) => {
     try {
+      if (!conversationId) {
+        alert("Please Select Conversation");
+      }
+
       const response = await axios.post("/api/v1/addmsg", {
-        conversationId: conversationId.id,
+        conversationId: conversationId,
         sender: usm,
         text: newMsg,
       });
@@ -95,7 +99,7 @@ function Messenger() {
       setNewMsg("");
       newMessage.current.value = "";
       setIsDone(!isDone);
-      // console.log(response);
+      console.log(response);
     } catch (err) {
       console.log(err);
       setNewMsg("");
@@ -105,12 +109,12 @@ function Messenger() {
   const sendGroupMessage = async (req, res) => {
     try {
       const response = await axios.post("/api/v1/addgrpmsg/", {
-        groupname: conversationId.id,
+        groupname: grp, // on hold
         sender: usm,
         text: newMsg,
       });
 
-      socket.current.emit("sendGroupMessage", {
+      socket.current.emit("sendMessage", {
         sender: usm,
         text: newMsg,
       });
@@ -129,13 +133,13 @@ function Messenger() {
     scrollRef?.current.scrollIntoView({ behavior: "smooth", block: "end" });
     // const s = scrollRef.current;
     // s.scrollTop = s.scrollHeight;
-  }, [arrivalMsg, sendMessage, grpMsg, setGrpMsg]);
+  }, [arrivalMsg, sendMessage]);
 
   const getMembersArray = async () => {
     try {
-      if (conversationId.type === "private") {
+      if (conversationId) {
         const response = await axios.get(
-          "/api/v1/getspecificconv/" + conversationId.id
+          "/api/v1/getspecificconv/" + conversationId
         );
         const n = response.data.members.filter((elm) => {
           return elm !== usm;
@@ -154,11 +158,7 @@ function Messenger() {
       alert("Can't send empty message..!!!");
       document.getElementById("sendBox").focus();
     } else {
-      if (conversationId.type === "private") {
-        sendMessage();
-      } else {
-        sendGroupMessage();
-      }
+      sendMessage();
     }
   };
 
@@ -177,11 +177,11 @@ function Messenger() {
         </div>
 
         <div className="chatBox">
-          {conversationId.id && (
+          {conversationId && (
             <div
               onClick={() =>
-                setIsProfileOpen({
-                  state: !isProfileOpen.state,
+                setisProfileOpen({
+                  state: true,
                   profile: "other",
                 })
               }
@@ -191,7 +191,6 @@ function Messenger() {
                   isProfileOpen.state &&
                   isProfileOpen.profile === "other" &&
                   "0.3",
-                cursor: "pointer",
               }}
             >
               {otherName}
@@ -200,7 +199,7 @@ function Messenger() {
           <div className="chatBoxWrapper">
             <div className="chatBoxTop">
               <div className="msgBox" ref={scrollRef}>
-                {conversationId.id ? (
+                {conversationId ? (
                   <Message />
                 ) : (
                   <>
@@ -214,7 +213,7 @@ function Messenger() {
                 )}
               </div>
             </div>
-            {conversationId.id && (
+            {conversationId && (
               <div className="chatBoxBottom">
                 <textarea
                   id="sendBox"

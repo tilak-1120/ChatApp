@@ -176,6 +176,12 @@ textarea:focus{
     /* width: 667px; */
     width: 44.23%;
     margin: auto;
+    transition: all ease-in-out 0.35s;
+  }
+
+  .selectedUser:hover{
+    transform: scale(1.02);
+    border-radius: 10px;
   }
 
   .msgBox{

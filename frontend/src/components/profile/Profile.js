@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { userContext } from "../../App";
 import "./profile.css";
+import OtherProfile from "../otherProfile/OtherProfile";
 import axios from "axios";
 
 const Profile = () => {
-  const { usm, setisProfileOpen, isProfileOpen } = useContext(userContext);
+  const { usm, setIsProfileOpen, isProfileOpen } = useContext(userContext);
 
   const [isEditOpen, setisEditOpen] = useState(false);
   const [about, setabout] = useState("");
@@ -56,6 +57,9 @@ const Profile = () => {
   ]);
 
   // console.log("path is : " + profilePic);
+  if (isProfileOpen.profile === "other") {
+    return <OtherProfile />;
+  }
 
   if (imginp) {
     return (
@@ -119,7 +123,12 @@ const Profile = () => {
       <div className="closebar">
         <svg
           className="closeButton"
-          onClick={() => setisProfileOpen(!isProfileOpen)}
+          onClick={() =>
+            setIsProfileOpen({
+              state: !isProfileOpen,
+              profile: "own",
+            })
+          }
           xmlns="http://www.w3.org/2000/svg"
           height="1em"
           viewBox="0 0 384 512"

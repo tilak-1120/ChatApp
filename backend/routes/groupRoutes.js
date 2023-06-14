@@ -4,6 +4,7 @@ const {
   updateGroup,
   getGroups,
   getSpecificGroup,
+  editGroupMember,
   deleteGroup,
 } = require("../controllers/groupController");
 
@@ -18,6 +19,9 @@ router.get("/getgroups/:username", getGroups);
 
 // Get Specific Groups
 router.get("/getspecificgroup/:groupname", getSpecificGroup);
+
+// Delete Specific Group Members
+router.put("/editgroupmember/:groupname/:membername", editGroupMember);
 
 // Delete Group
 router.delete("/deletegroup/:groupname", deleteGroup);

@@ -51,7 +51,7 @@ function ChatOnline() {
     setOnlineProfilePics([]);
   }, [refresh]);
 
-  return isProfileOpen ? (
+  return isProfileOpen.state ? (
     <Profile />
   ) : (
     <>

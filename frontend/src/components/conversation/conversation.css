@@ -31,9 +31,9 @@
   text-align: center;
   transition: all ease-in-out 0.35s;
   margin-top: 10px;
-  border-bottom: 2px solid gray;
   border-radius: 50%;
   margin-bottom: -5px;
+  
 }
 
 .refresh:hover{
@@ -45,6 +45,7 @@
   display: flex;
   width: 90%;
   margin: auto;
+  padding-bottom: 20px;
   align-items: center;
   justify-content: space-around;
   height: 50px;
@@ -55,21 +56,22 @@
 }
 
 .addconvButton{
-  font-weight: 700;
-  font-size: larger;
-  color: aliceblue;
+  height: 40px;
+  width: 100px;
+  border-radius: 10px;
   background-color: #4942E4;
-  border-radius: 30px;
-  padding: 6px 0px;
-  border: none;
-  width: 40px;
+  color: aliceblue;
+  border: 2px solid #4942E4;
   cursor: pointer;
+  font-weight: 600;
   transition: all ease-in-out 0.35s;
+  font-size: 13px;
 }
 
 .addconvButton:hover{
-  background-color: rgb(168, 185, 200);
+  background-color: aliceblue;
   color: #4942E4;
+  border-radius: 30px;
 }
 
 .refreshButton{
@@ -77,10 +79,10 @@
   font-weight: 700;
   font-size: 20px;
   color: #086ef5;
-  /* background-color: #4942E4; */
+  background-color: #4942E4;
   border: 2px solid aliceblue;
   border-radius: 30px;
-  padding: 6px 0px;
+  padding-top: 6px;
   border: none;
   width: 40px;
   cursor: pointer;
@@ -96,6 +98,12 @@
   font-size: larger;
   color: rgb(88, 87, 87);
   /* background-color: #086ef5; */
+}
+
+.btns{
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
 }
 
 .conversation {

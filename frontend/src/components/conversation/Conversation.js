@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./conversation.css";
 import { userContext } from "../../App";
 import AddConversation from "../addConversation/AddConversation";
+import AddGroup from "../addGroup/AddGroup";
 import axios from "axios";
 
 function Conversation() {
@@ -13,7 +14,7 @@ function Conversation() {
     conv,
     setConv,
     setOtherName,
-    setisProfileOpen,
+    setIsProfileOpen,
     isProfileOpen,
     refresh,
     setRefresh,
@@ -22,6 +23,7 @@ function Conversation() {
   const [photos, setPhotos] = useState([]);
   const [usmimg, setUsmImg] = useState("");
   const [grp, setGrp] = useState([]);
+  const [isGrpUpdateOpen, setisGrpUpdateOpen] = useState(false);
 
   var names = [];
 
@@ -42,7 +44,7 @@ function Conversation() {
       if (usm) {
         const response = await axios.get("/api/v1/getgroups/" + usm);
         setGrp(response.data);
-        console.log(response);
+        // console.log(response);
       }
     } catch (err) {
       console.log(err);
@@ -81,11 +83,19 @@ function Conversation() {
     getConv();
     getPhotos();
     getGroups();
-  }, [isOpen, refresh, setPhotos]);
+  }, [isOpen, refresh, setPhotos, isGrpUpdateOpen]);
 
   useEffect(() => {
     getUserProfilePicture();
-  }, [isProfileOpen]);
+  }, [isProfileOpen, refresh]);
+
+  if (isGrpUpdateOpen) {
+    return (
+      <div>
+        <AddGroup set={setisGrpUpdateOpen} />
+      </div>
+    );
+  }
 
   return isOpen ? (
     <AddConversation />
@@ -93,18 +103,29 @@ function Conversation() {
     <>
       <div
         className="username"
-        onClick={() => setisProfileOpen(!isProfileOpen)}
+        onClick={() =>
+          setIsProfileOpen({
+            state: !isProfileOpen.state,
+            profile: "own",
+          })
+        }
       >
         <img className="profileImg" src={usmimg} alt="" />
         {usm}
       </div>
       <div className="addconv">
-        <div>
+        {/* <div>
           <label className="addconvLabel">Add Friends</label>
-        </div>
-        <div>
+        </div> */}
+        <div className="btns">
           <button className="addconvButton" onClick={() => setIsOpen(!isOpen)}>
-            +
+            Add Friends
+          </button>
+          <button
+            className="addconvButton"
+            onClick={() => setisGrpUpdateOpen(!isGrpUpdateOpen)}
+          >
+            Add Group
           </button>
           <button
             className="refreshButton"
@@ -118,6 +139,7 @@ function Conversation() {
               height="1em"
               viewBox="0 0 512 512"
             >
+              <style>{`svg{fill:#ffffff;}`}</style>
               <path d="M386.3 160H336c-17.7 0-32 14.3-32 32s14.3 32 32 32H464c17.7 0 32-14.3 32-32V64c0-17.7-14.3-32-32-32s-32 14.3-32 32v51.2L414.4 97.6c-87.5-87.5-229.3-87.5-316.8 0s-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3s163.8-62.5 226.3 0L386.3 160z" />
             </svg>
           </button>
@@ -128,7 +150,16 @@ function Conversation() {
 
       {grp.map((key) => {
         return (
-          <div className="conversation">
+          <div
+            className="conversation"
+            onClick={() => {
+              setConversationId({
+                id: key.groupname,
+                type: "group",
+              });
+              setOtherName(key.groupname);
+            }}
+          >
             <img className="conversationImg" src={key.groupProfile} alt="" />
             <span className="conversationName">{key.groupname}</span>
           </div>
@@ -145,7 +176,10 @@ function Conversation() {
           <div
             className="conversation"
             onClick={() => {
-              setConversationId(key._id);
+              setConversationId({
+                id: key._id,
+                type: "private",
+              });
               const n = key.members.filter((elm) => {
                 return elm !== usm;
               });
