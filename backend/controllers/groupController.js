@@ -63,7 +63,7 @@ exports.getGroups = async (req, res) => {
 
 exports.getSpecificGroup = async (req, res) => {
   try {
-    const findGroup = await Group.find({
+    const findGroup = await Group.findOne({
       groupname: req.params.groupname,
     });
 

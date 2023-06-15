@@ -39,7 +39,7 @@ function ChatOnline() {
         const res = await axios.get("/api/v1/getuser/" + key);
         // console.log(res.data.profilePicture);
         setOnlineProfilePics((prev) => [...prev, res.data.profilePicture]);
-        console.log(onlineProfilePics);
+        // console.log(onlineProfilePics);
       });
     } catch (err) {
       console.log(err);

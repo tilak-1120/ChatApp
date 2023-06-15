@@ -12,61 +12,69 @@ const AddGroup = (props) => {
 
   const addGroup = async (req, res) => {
     try {
-      const findGroup = await axios.get(
-        "/api/v1/getspecificgroup/" + groupName.current.value
-      );
-
-      const findMember = await axios.get(
-        "/api/v1/getuser/" + memberName.current.value
-      );
-
-      // console.log(findGroup.status);
-      // console.log(findMember);
-
-      if (findGroup.status === 404 || findMember.status === 404) {
-        alert("Invalid Details");
-      }
-
-      if (findGroup && findMember) {
-        const updateGroup = await axios.put(
-          "/api/v1/updategroup/" + groupName.current.value,
-          {
-            groupmembers: memberName.current.value,
-          }
+      try {
+        const findGroup = await axios.get(
+          "/api/v1/getspecificgroup/" + groupName.current.value
         );
-        console.log(updateGroup);
-        alert("New Member Added Successfully");
+
+        const findMember = await axios.get(
+          "/api/v1/getuser/" + memberName.current.value
+        );
+
+        // if (findGroup.status === 404 || findMember.status === 404) {
+        //   return alert("Invalid Details");
+        // }
+      } catch (err) {
+        // alert("Groupname or Membername doesn't exists. Try a different one.");
+        console.log(err);
       }
+
+      const updateGroup = await axios.put(
+        "/api/v1/updategroup/" + groupName.current.value,
+        {
+          groupmembers: memberName.current.value,
+        }
+      );
+      console.log(updateGroup);
+      groupName.current.value = "";
+      memberName.current.value = "";
+      alert("New Member Added Successfully");
     } catch (err) {
+      alert("Groupname or Membername doesn't exists. Try a different one.");
       console.log(err);
     }
   };
 
   const createGroup = async (req, res) => {
     try {
-      const findMember = await axios.get(
-        "/api/v1/getuser/" + newMemberName.current.value
-      );
-
-      // console.log(findGroup.status);
-      // console.log(findMember);
-
-      if (findMember) {
-        const addGroup = await axios.post("/api/v1/addgroup", {
-          groupname: newGroupName.current.value,
-          groupadmin: usm,
-          groupmembers: [newMemberName.current.value],
-        });
-        console.log(addGroup);
-        alert(
-          "New Group Created and Member Added Successfully. You're the group Admin"
+      try {
+        const findGroup = await axios.get(
+          "/api/v1/getspecificgroup/" + newGroupName.current.value
         );
+
+        const findMember = await axios.get(
+          "/api/v1/getuser/" + newMemberName.current.value
+        );
+        // console.log(findGroup);
+        // console.log(findMember);
+      } catch (err) {
+        alert("Try a different groupname or membername");
+        console.log(err);
       }
 
-      if (findMember.status === 404) {
-        alert("Invalid Details");
-      }
+      const addGroup = await axios.post("/api/v1/addgroup", {
+        groupname: newGroupName.current.value,
+        groupadmin: usm,
+        groupmembers: [newMemberName.current.value],
+      });
+      console.log(addGroup);
+      alert(
+        "New Group Created and Member Added Successfully. You're the group Admin"
+      );
+      newGroupName.current.value = "";
+      newMemberName.current.value = "";
     } catch (err) {
+      alert("Try a different groupname or membername");
       console.log(err);
     }
   };
@@ -74,17 +82,20 @@ const AddGroup = (props) => {
   const handleGroupClick = (e) => {
     e.preventDefault();
     addGroup();
-    if ((groupName.current.value && memberName.current.value) !== "") {
-      return props.set(false);
-    }
+    // if ((groupName.current.value && memberName.current.value) !== "") {
+    //   return props.set(false);
+    // }
   };
 
   const handleNewGroupClick = (e) => {
     e.preventDefault();
     createGroup();
-    if (groupName.current.value !== "" && memberName.current.value !== "") {
-      return props.set(false);
-    }
+    // if (
+    //   newGroupName.current.value !== "" &&
+    //   newMemberName.current.value !== ""
+    // ) {
+    //   return props.set(false);
+    // }
   };
 
   return (
