@@ -14,6 +14,12 @@ function Register() {
 
   const registerCall = async (username, email, password) => {
     try {
+      const findUser = await axios.get("/api/v1/getuser/" + username);
+
+      if (findUser) {
+        return alert("User Already Exists..!!!");
+      }
+
       const response = await axios.post("/api/v1/register", {
         username,
         email,
@@ -22,6 +28,7 @@ function Register() {
 
       response ? navigate("/") : alert("Registration Unsuccessfull");
     } catch (err) {
+      alert("Email Already Taken..!!!");
       console.log(err);
     }
   };

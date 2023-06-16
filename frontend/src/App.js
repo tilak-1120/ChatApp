@@ -11,17 +11,21 @@ export const userContext = createContext();
 function App() {
   const [usm, setUsm] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [conversationId, setConversationId] = useState("");
+  const [conversationId, setConversationId] = useState({
+    id: "",
+    type: "",
+  });
   const [isDone, setIsDone] = useState(false);
   const [conv, setConv] = useState([]);
   const [msg, setMsg] = useState([]);
   const [otherName, setOtherName] = useState("");
   const [usersOnline, setUsersOnline] = useState([]);
-  const [isProfileOpen, setisProfileOpen] = useState({
+  const [isProfileOpen, setIsProfileOpen] = useState({
     state: false,
     profile: "own",
   });
   const [refresh, setRefresh] = useState(Boolean);
+  const [groupMessage, setGroupMessage] = useState([]);
 
   return (
     <>
@@ -44,9 +48,12 @@ function App() {
           usersOnline,
           setUsersOnline,
           isProfileOpen,
-          setisProfileOpen,
+          setIsProfileOpen,
           refresh,
           setRefresh,
+          groupMessage,
+          setGroupMessage,
+
         }}
       >
         <BrowserRouter>

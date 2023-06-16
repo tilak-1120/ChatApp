@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { userContext } from "../../App";
 import "./profile.css";
-import axios from "axios";
 import OtherProfile from "../otherProfile/OtherProfile";
+import axios from "axios";
+import GroupProfile from "../groupProfile/GroupProfile";
 
-const Profile = (props) => {
-  const { usm, setisProfileOpen, isProfileOpen } = useContext(userContext);
+const Profile = () => {
+  const { usm, setIsProfileOpen, isProfileOpen, refresh, conversationId } = useContext(userContext);
 
   const [isEditOpen, setisEditOpen] = useState(false);
   const [about, setabout] = useState("");
@@ -33,12 +34,13 @@ const Profile = (props) => {
   };
 
   const removeProfilePicture = async (req, res) => {
-    const response = await axios.get("/api/v1/removeProfilePicture/" + usm);
-    // console.log(response);
+    await axios.put("/api/v1/removeProfilePicture/" + usm);
+
   };
 
   useEffect(() => {
     if (usm) {
+      if(conversationId.type === "private")
       axios.get("/api/v1/getuser/" + usm).then((response) => {
         // console.log(response.data.about);
         setabout(response.data.about);
@@ -54,12 +56,16 @@ const Profile = (props) => {
     setNewImg,
     about,
     setabout,
+    refresh,
   ]);
 
-  // console.log("path is : " + profilePic);
+  if(isProfileOpen.profile === "group"){
+    return <GroupProfile />
+  }
 
-  if(isProfileOpen.profile === "other"){
-    return <OtherProfile />
+  // console.log("path is : " + profilePic);
+  if (isProfileOpen.profile === "private") {
+    return <OtherProfile />;
   }
 
   if (imginp) {
@@ -124,11 +130,18 @@ const Profile = (props) => {
       <div className="closebar">
         <svg
           className="closeButton"
-          onClick={() => setisProfileOpen({
-            state: !isProfileOpen,
-            profile: "own"
-          })}
-          xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><style>{'svg{fill:#11009e}'}</style><path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>
+          onClick={() =>
+            setIsProfileOpen({
+              state: !isProfileOpen,
+              profile: "own",
+            })
+          }
+          xmlns="http://www.w3.org/2000/svg"
+          height="1em"
+          viewBox="0 0 384 512"
+        >
+          <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z" />
+        </svg>
       </div>
       <div className="prof-pic">
         <img
@@ -146,7 +159,7 @@ const Profile = (props) => {
               <p
                 className="newphoto"
                 onClick={() => {
-                  setProfilePic("../uploads/def.jpg");
+                  setProfilePic("../uploads/default.jpg");
                   removeProfilePicture();
                 }}
               >
@@ -159,13 +172,13 @@ const Profile = (props) => {
       <div className="usm">
         <h2>{usm}</h2>
       </div>
-      <span className="abtlabel">ABOUT: {isProfileOpen.Profile}</span>
+      <span className="abtlabel">ABOUT:</span>
       <div className="about">
         <p className="aboutContent">
           {about ? (
             about
           ) : (
-            <p className="aboutPara" style={{color:"gray"}}>Tell Something About You...!!!</p>
+            <p className="aboutPara">Tell Something About You...!!!</p>
           )}
         </p>
         <div className="p">

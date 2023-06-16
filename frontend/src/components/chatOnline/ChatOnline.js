@@ -4,7 +4,7 @@ import { userContext } from "../../App";
 import Profile from "../profile/Profile";
 import axios from "axios";
 
-function ChatOnline(props) {
+function ChatOnline() {
   const { usersOnline, usm, isProfileOpen, conv, refresh } =
     useContext(userContext);
   const [onlineProfilePics, setOnlineProfilePics] = useState([]);
@@ -52,12 +52,12 @@ function ChatOnline(props) {
   }, [refresh]);
 
   return isProfileOpen.state ? (
-      <Profile />
+    <Profile />
   ) : (
     <>
       <div className="chatOnline">
         <div className="addconv">
-          <label style={{color:'black'}}>Online Friends </label>
+          <label className="addconvLabel">Online Friends</label>
         </div>
 
         {users.map((key, index) => {

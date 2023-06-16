@@ -5,14 +5,24 @@ import axios from "axios";
 import { format } from "timeago.js";
 
 function Message() {
-  const { conversationId, usm, isDone, msg, setMsg, refresh } = useContext(userContext);
+  const {
+    conversationId,
+    usm,
+    isDone,
+    msg,
+    setMsg,
+    otherName,
+    groupMessage,
+    setGroupMessage,
+  } = useContext(userContext);
   const [senderImg, setSenderImg] = useState("");
   const [recieverImg, setRecieverImg] = useState("");
+  const [groupMemberImage, setGroupMemberImage] = useState([]);
 
   const getMessages = async (req, res) => {
     try {
-      if (conversationId) {
-        const response = await axios.get("/api/v1/getmsg/" + conversationId);
+      if (conversationId.id) {
+        const response = await axios.get("/api/v1/getmsg/" + conversationId.id);
         setMsg(response.data);
         console.log(response);
       }
@@ -23,45 +33,111 @@ function Message() {
 
   const getImages = async (req, res) => {
     try {
-      const conversation = await axios.get(
-        "/api/v1/getspecificconv/" + conversationId
-      );
+      if (conversationId.type === "private") {
+        const conversation = await axios.get(
+          "/api/v1/getspecificconv/" + conversationId.id
+        );
 
-      // console.log(conversation);
-      const sender = conversation.data.members[0];
-      const receiver = conversation.data.members[1];
-      console.log("sender" + sender);
+        // console.log(conversation);
+        const sender = conversation.data.members[0];
+        const receiver = conversation.data.members[1];
+        console.log("sender" + sender);
 
-      if (sender === usm) {
-        const senderImage = await axios.get("/api/v1/getuser/" + sender);
-        console.log(senderImage);
-        setSenderImg(senderImage.data.profilePicture);
-      } else {
-        const receiverImage = await axios.get("/api/v1/getuser/" + sender);
-        console.log(receiverImage);
-        setRecieverImg(receiverImage.data.profilePicture);
-      }
+        if (sender === usm) {
+          const senderImage = await axios.get("/api/v1/getuser/" + sender);
+          console.log(senderImage);
+          setSenderImg(senderImage.data.profilePicture);
+        } else {
+          const receiverImage = await axios.get("/api/v1/getuser/" + sender);
+          console.log(receiverImage);
+          setRecieverImg(receiverImage.data.profilePicture);
+        }
 
-      if (receiver === usm) {
-        const senderImage = await axios.get("/api/v1/getuser/" + receiver);
-        console.log(senderImage);
-        setSenderImg(senderImage.data.profilePicture);
-      } else {
-        const receiverImage = await axios.get("/api/v1/getuser/" + receiver);
-        console.log(receiverImage);
-        setRecieverImg(receiverImage.data.profilePicture);
+        if (receiver === usm) {
+          const senderImage = await axios.get("/api/v1/getuser/" + receiver);
+          console.log(senderImage);
+          setSenderImg(senderImage.data.profilePicture);
+        } else {
+          const receiverImage = await axios.get("/api/v1/getuser/" + receiver);
+          console.log(receiverImage);
+          setRecieverImg(receiverImage.data.profilePicture);
+        }
       }
     } catch (err) {
       console.log(err);
     }
   };
 
-  useEffect(() => {
-    getMessages();
-    getImages();
-  }, [conversationId, isDone, refresh]);
+  const getGroupMessages = async (req, res) => {
+    try {
+      console.log(conversationId);
+      if (conversationId.type === "group") {
+        const response = await axios.get(
+          "/api/v1/getgrpmsg/" + conversationId.id
+        );
+        console.log(response);
+        setGroupMessage(response.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  return (
+  const getSenderImage = async () => {
+    try {
+      // console.log(sender);
+      const response = await axios.get("/api/v1/getspecificgroup/" + otherName);
+      console.log(response.data);
+      setGroupMemberImage([]);
+      setGroupMemberImage([
+        response.data[0].groupadmin,
+        ...response.data[0].groupmembers,
+      ]);
+
+      console.log(groupMemberImage);
+
+      groupMemberImage.map(async (elm) => {
+        const response = await axios.get("api/v1/getuser/" + elm);
+        console.log(response.data.profilePicture);
+
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // console.log(getSenderImage("deep"));
+
+  const mainGetFunction = () => {
+    if (conversationId.type === "private") {
+      getMessages();
+      getImages();
+    } else {
+      getGroupMessages();
+      getSenderImage();
+    }
+  };
+
+  useEffect(() => {
+    mainGetFunction();
+  }, [conversationId.id, isDone]);
+
+  return conversationId.type === "group" ? (
+    <>
+      {groupMessage.map((key) => {
+        return (
+          <div className={key.sender === usm ? "message own" : "message"}>
+            <div className="messageTop">
+              <img className="messageImg" src="" alt="alt" />
+              <div>{key.sender !== usm && key.sender}</div>
+              <p className="messageText">{key.text}</p>
+            </div>
+            <div className="messageBottom">{format(key.createdAt)}</div>
+          </div>
+        );
+      })}
+    </>
+  ) : (
     <>
       {msg.map((key) => {
         return (

@@ -13,6 +13,7 @@
     font-weight: 500;
     transition: all ease-in-out 0.3s;
     /* border-bottom: 2px solid rgb(165, 165, 165); */
+    overflow: scroll;
   }
   
   .chatOnlineImgContainer {

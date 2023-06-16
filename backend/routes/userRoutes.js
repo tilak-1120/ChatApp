@@ -27,6 +27,6 @@ router.put("/updateabout", updateAbout);
 router.post("/setProfilePicture", type, setProfilePic);
 
 // Remove Profile Pic
-router.get("/removeProfilePicture/:username", removeProfilePicture);
+router.put("/removeProfilePicture/:username", removeProfilePicture);
 
 module.exports = router;

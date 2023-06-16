@@ -7,15 +7,15 @@ function AddConversation() {
   const receiverUser = useRef();
   const { setIsOpen, usm, conv } = useContext(userContext);
 
-
   const addConv = async (req, res) => {
     try {
+      var convUsers = [];
       // console.log(receiverUser.current.value);
 
       const findUser = await axios.get(
         "/api/v1/getuser/" + receiverUser.current.value
       );
-      var convUsers = [];
+
       if (findUser) {
         conv.map((key) => {
           key.members.filter((elm) => {
@@ -33,8 +33,10 @@ function AddConversation() {
         if (convUsers.length !== 0) {
           // console.log("Inside findUser");
           // console.log(convUsers);
-          convUsers.find((user) => user === receiverUser.current.value) &&
-            alert("This friend already exists");
+          return (
+            convUsers.find((user) => user === receiverUser.current.value) &&
+            alert("This friend already exists")
+          );
         }
       }
 
@@ -44,28 +46,24 @@ function AddConversation() {
         senderUser: usm,
         receiverUser: receiverUser.current.value,
       });
-      if(response.status === 404){
-        alert("no user exists with entered username")
-      }
+
       if (response) {
+        // console.log(response.data._id);
         alert("New Friend Added Successfully");
         setIsOpen(false);
       } else {
         alert("User doesn't exists");
       }
     } catch (err) {
+      alert("Invalid Username");
       console.log(err);
     }
   };
-
-
 
   const handleClick = (e) => {
     e.preventDefault();
     addConv();
   };
-
-
 
   return (
     <>
@@ -90,8 +88,6 @@ function AddConversation() {
           </button>
         </div>
       </div>
-
-      
     </>
   );
 }

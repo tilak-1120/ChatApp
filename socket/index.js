@@ -54,7 +54,7 @@ io.on("connection", (socket) => {
 
   socket.on("addGroupUsers", (userName) => {
     addGroupUsers(userName, socket.id);
-    io.emit("getGroupUsers", groupUsers);
+    io.emit("getGroupUsers", users);
   });
 
   socket.on("sendGroupMessage", ({ sender, text }) => {

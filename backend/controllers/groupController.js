@@ -1,4 +1,5 @@
 const Group = require("../models/groupSchema");
+const fs = require('fs');
 
 exports.newGroup = async (req, res) => {
   try {
@@ -77,6 +78,19 @@ exports.getSpecificGroup = async (req, res) => {
   }
 };
 
+exports.editGroupMember = async (req, res) => {
+  try {
+    const findGroup = await Group.updateOne(
+      { groupname: req.params.groupname },
+      { $pull: { groupmembers: req.params.membername } },
+      { new: true }
+    );
+    res.status(200).json(findGroup);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
 exports.deleteGroup = async (req, res) => {
   try {
     const findGroup = await Group.findOne({ groupname: req.params.groupname });
@@ -94,3 +108,48 @@ exports.deleteGroup = async (req, res) => {
     res.status(500).json(err);
   }
 };
+
+exports.setGroupProfilePic = async(req,res) => {
+
+  try{
+    const { originalname, path } = req.file;
+    const parts = originalname.split(".");
+    const extention = parts[parts.length - 1];
+    const newpath = path + "." + extention;
+    fs.renameSync(path, newpath);
+
+    const response = await Group.updateOne(
+      { groupname: req.body.group },
+      { $set: { groupProfile: newpath } }
+    );
+
+    res.status(200).json("Profile picture updated");
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
+
+exports.removeGroupProfilePic = async (req,res) => {
+  try {
+    const response = await Group.updateOne(
+      { groupname: req.params.GroupName },
+      { $set: { groupProfile: "../uploads/groupDefault.png" } }
+    );
+    res.status(200).json(response);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
+
+exports.addMembers = async (req, res) => {
+  try{
+    const response = await Group.updateOne(
+      { groupname: req.params.groupName },
+      { $push: { groupmembers: req.params.newMember }},
+      { new: true },
+    )
+    res.status(200).json(response);
+  }catch(err){
+    res.status(500).json(err);
+  }
+}

@@ -106,6 +106,7 @@ textarea:focus{
     margin-top: 10px;
     max-height: 89vh;
     border-radius: 10px;
+    overflow: scroll;
   }
   
   .chatMenuWrapper{
@@ -173,6 +174,7 @@ textarea:focus{
     color: white;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+    /* width: 667px; */
     width: 44.23%;
     margin: auto;
     transition: all ease-in-out 0.35s;
@@ -182,7 +184,7 @@ textarea:focus{
     transform: scale(1.02);
     border-radius: 10px;
   }
-  
+
   .msgBox{
     margin-top: 70px;
   }
