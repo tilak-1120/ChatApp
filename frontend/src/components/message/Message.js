@@ -76,7 +76,7 @@ function Message() {
         const response = await axios.get(
           "/api/v1/getgrpmsg/" + conversationId.id
         );
-        console.log(response);
+        // console.log(response);
         setGroupMessage(response.data);
       }
     } catch (err) {
@@ -88,23 +88,25 @@ function Message() {
     try {
       // console.log(sender);
       const response = await axios.get("/api/v1/getspecificgroup/" + otherName);
-      console.log(response.data);
+      // console.log(response);
+      // console.log(response.data.groupadmin);
+      console.log(otherName);
       setGroupMemberImage([]);
       setGroupMemberImage([
-        response.data[0].groupadmin,
-        ...response.data[0].groupmembers,
+        response.data.groupadmin,
+        ...response.data.groupmembers,
       ]);
 
-      console.log(groupMemberImage);
+      // console.log(groupMemberImage);
 
       groupMemberImage.map(async (elm) => {
         const response = await axios.get("api/v1/getuser/" + elm);
-        console.log(response.data.profilePicture);
+        // console.log(response.data.profilePicture);
         setGroupMemberImageObject((prev) => {
           return [...prev, response.data.profilePicture];
         });
       });
-      console.log(setGroupMemberImageObject);
+      // console.log(setGroupMemberImageObject);
     } catch (err) {
       console.log(err);
     }

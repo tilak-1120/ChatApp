@@ -42,7 +42,7 @@ font-size: xx-large;
 
 .about{
   background-color: lightgray;
-  margin: auto;
+  margin-bottom: 20px;
   border-radius: 10px;
   color: black;
   padding-left: 40px;

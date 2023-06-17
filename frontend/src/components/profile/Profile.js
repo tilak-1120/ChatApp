@@ -3,15 +3,17 @@ import { userContext } from "../../App";
 import "./profile.css";
 import OtherProfile from "../otherProfile/OtherProfile";
 import axios from "axios";
+import GroupProfile from "../groupProfile/GroupProfile";
 
 const Profile = () => {
-  const { usm, setIsProfileOpen, isProfileOpen } = useContext(userContext);
+  const { usm, setIsProfileOpen, isProfileOpen, refresh } =
+    useContext(userContext);
 
   const [isEditOpen, setisEditOpen] = useState(false);
   const [about, setabout] = useState("");
   const newEditContent = useRef();
   const [newimg, setNewImg] = useState(false);
-  const [imginp, setImgInp] = useState(false);
+  const [imgInp, setImgInp] = useState(false);
   const [files, setFiles] = useState(null);
   const [profilePic, setProfilePic] = useState("");
 
@@ -46,6 +48,7 @@ const Profile = () => {
       });
     }
   }, [
+    imgInp,
     setisEditOpen,
     isEditOpen,
     newimg,
@@ -54,14 +57,19 @@ const Profile = () => {
     setNewImg,
     about,
     setabout,
+    refresh,
   ]);
 
+  if (isProfileOpen.profile === "group") {
+    return <GroupProfile />;
+  }
+
   // console.log("path is : " + profilePic);
-  if (isProfileOpen.profile === "other") {
+  if (isProfileOpen.profile === "private") {
     return <OtherProfile />;
   }
 
-  if (imginp) {
+  if (imgInp) {
     return (
       <div className="chooseImg">
         <input
@@ -77,7 +85,7 @@ const Profile = () => {
             className="addButton"
             type="submit"
             onClick={(e) => {
-              setImgInp(!imginp);
+              setImgInp(!imgInp);
               setNewImg(!newimg);
               handelUpload();
             }}
@@ -87,7 +95,7 @@ const Profile = () => {
           <button
             className="backButton"
             onClick={() => {
-              setImgInp(!imginp);
+              setImgInp(!imgInp);
               setNewImg(!newimg);
             }}
           >
@@ -146,10 +154,10 @@ const Profile = () => {
         />
         {newimg && (
           <div style={{ display: "flex", gap: "30px" }}>
-            <p className="newphoto" onClick={() => setImgInp(!imginp)}>
+            <p className="newphoto" onClick={() => setImgInp(!imgInp)}>
               Add Profile Picture
             </p>
-            {profilePic !== "../uploads/def.jpg" && (
+            {profilePic !== "../uploads/default.jpg" && (
               <p
                 className="newphoto"
                 onClick={() => {

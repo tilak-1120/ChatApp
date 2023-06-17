@@ -1,3 +1,7 @@
+.chatOnline{
+  overflow-y: scroll;
+}
+
 .chatOnlineFriend {
     /* display: flex;
     align-items: center;

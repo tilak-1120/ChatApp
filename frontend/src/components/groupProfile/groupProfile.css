@@ -1,0 +1,137 @@
+.GrpProfile{
+    overflow-y: scroll;
+    height: 87.5vh;
+}
+
+.Members{
+    display: flex;
+    flex-direction: column;
+    /* width: 90%; */
+    margin-top: 10px;
+    width: 335px;
+    justify-content: flex-start;
+    border-radius: 10px;
+    padding: 0 10px 10px 10px;
+    background-color: lightgray;
+}
+.Member{
+    margin-top: 10px;
+    font-size: large;
+    padding-left: 7%;
+    padding: 8px 10px;
+    transition: all ease-in-out 0.35s;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 0.5px gray solid;
+    cursor: pointer;
+}
+
+.svg{
+    transition: all ease-in-out 0.2s;
+    stroke: black;
+}
+
+.svg:hover{
+    stroke: white;
+    transform: scale(1.5);
+    padding-top: 5px;
+    cursor: pointer;
+}
+
+.Member:hover{
+    transform: scale(1.02);
+    background-color: #4942E4;
+    color: white;
+    border-radius: 10px;
+    padding-top: 13px;
+}
+
+.membersLabel{
+    margin-left: 15px;
+    position: relative;
+    bottom: 5px;
+}
+
+.AdminTag{
+    font-size: small;
+    margin-left: 75%;
+}
+
+.usm{
+    text-align: center;
+    font-size: 25px;
+    margin-top: -10px;
+}
+
+.addMembers{
+    margin-top: 20px;
+    text-align: center;
+}
+
+.AddMemberBtn{
+    font-weight: 900;
+    font-size: 15px;
+    /* color: #086ef5; */
+    color: white;
+    background-color: #4942E4;
+    border: 2px solid aliceblue;
+    border-radius: 25px;
+    padding-bottom: 2px;
+    border: none;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: all ease-in-out 0.3s;
+    margin: auto;
+    position: absolute;
+    top: 9px;
+    left: 270px;
+    bottom: -1px;
+}
+
+.AddMemberBtn:hover{
+    transform: scale(1.05);
+    text-align: center;
+    background-color: lightgray;
+    color: #4942E4;
+    border: 2px solid #4942E4;
+}
+
+.AddMemberDiv{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    background-color: inherit;
+    margin: auto;
+}
+
+.friends{
+    width: 300px;
+    background-color: lightgray;
+    margin: auto;   
+    margin-top: 10px;
+    border: 0;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all ease-in-out 0.35s;
+
+}
+
+.friends:hover{
+    transform: scale(1.02);
+    background-color: #4942E4;
+    color: white;
+}
+
+.addconvButton{
+    margin: 30px auto;
+}
+
+.delteUser{
+    border: 0;
+    background-color: inherit;
+    padding: 3px 0;
+}
+.delteUser:hover{
+    padding:0;
+}

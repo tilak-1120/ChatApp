@@ -118,7 +118,7 @@ function Messenger() {
       setNewMsg("");
       newMessage.current.value = "";
       setIsDone(!isDone);
-      console.log(response);
+      // console.log(response);
     } catch (err) {
       console.log(err);
       setNewMsg("");
@@ -182,7 +182,7 @@ function Messenger() {
               onClick={() =>
                 setIsProfileOpen({
                   state: !isProfileOpen.state,
-                  profile: "other",
+                  profile: conversationId.type,
                 })
               }
               className="selectedUser"
