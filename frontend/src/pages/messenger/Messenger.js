@@ -26,6 +26,10 @@ function Messenger() {
     isProfileOpen,
     setIsProfileOpen,
     setGroupMessage,
+    setUnseenMsgs,
+    unseenMsgs,
+    refresh,
+    msg
   } = useContext(userContext);
 
   const navigate = useNavigate();
@@ -33,19 +37,39 @@ function Messenger() {
   const newMessage = useRef();
   const socket = useRef();
 
+  const print = (req,res) => {
+    console.log(arrivalMsg);
+    if(arrivalMsg?.receiver !== arrivalMsg?.sender)
+    {
+      setUnseenMsgs(prev=>{
+        return [...prev, arrivalMsg.sender]
+      })
+    }
+    // console.log(unseenMsgs);
+  }
+
+
+
+  useEffect(()=>{
+    print();
+  },[arrivalMsg]);
+
   useEffect(() => {
     socket.current = io("ws://localhost:5000");
     socket.current.on("getMessage", (data) => {
+      console.log(data);
       setArrivalMsg({
         sender: data.sender,
         text: data.text,
         createdAt: Date.now(),
+        receiver: usm,
       });
     });
     socket.current.on("getGroupMessage", (data) => {
       setGrpMsg({
         sender: data.sender,
         text: data.text,
+        groupname: otherName,
         createdAt: Date.now(),
       });
     });
@@ -59,7 +83,7 @@ function Messenger() {
     arrivalMsg && setMsg((prev) => [...prev, arrivalMsg]);
     grpMsg && setGroupMessage((prev) => [...prev, grpMsg]);
     // console.log(arrivalMsg);
-  }, [arrivalMsg, setMsg, grpMsg, setGrpMsg, setGroupMessage]);
+  }, [arrivalMsg, setMsg, grpMsg, setGrpMsg, setGroupMessage, refresh]);
 
   useEffect(() => {
     // setSocket(io("ws://localhost:5000"));
@@ -69,12 +93,12 @@ function Messenger() {
     socket.current.emit("addUser", usm);
     socket.current.on("getUsers", (users) => {
       setUsersOnline(users);
-      console.log(users);
+      // console.log(users);
     });
 
     socket.current.emit("addGroupUsers", usm); // need to be changed
     socket.current.on("getGroupUsers", (users) => {
-      console.log(users);
+   
     });
   }, [usm, conversationId.type]);
 
@@ -118,7 +142,7 @@ function Messenger() {
       setNewMsg("");
       newMessage.current.value = "";
       setIsDone(!isDone);
-      console.log(response);
+      // console.log(response);
     } catch (err) {
       console.log(err);
       setNewMsg("");

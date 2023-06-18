@@ -13,18 +13,20 @@ function Message() {
     setMsg,
     otherName,
     groupMessage,
-    setGroupMessage,
+    refresh,
+    isProfileOpen,
   } = useContext(userContext);
   const [senderImg, setSenderImg] = useState("");
   const [recieverImg, setRecieverImg] = useState("");
   const [groupMemberImage, setGroupMemberImage] = useState([]);
+  const [deletemsg , setdeletemsg] = useState(Boolean);
 
   const getMessages = async (req, res) => {
     try {
       if (conversationId.id) {
         const response = await axios.get("/api/v1/getmsg/" + conversationId.id);
         setMsg(response.data);
-        console.log(response);
+        // console.log(response);
       }
     } catch (err) {
       console.log(err);
@@ -41,25 +43,25 @@ function Message() {
         // console.log(conversation);
         const sender = conversation.data.members[0];
         const receiver = conversation.data.members[1];
-        console.log("sender" + sender);
+        // console.log("sender" + sender);
 
         if (sender === usm) {
           const senderImage = await axios.get("/api/v1/getuser/" + sender);
-          console.log(senderImage);
+          // console.log(senderImage);
           setSenderImg(senderImage.data.profilePicture);
         } else {
           const receiverImage = await axios.get("/api/v1/getuser/" + sender);
-          console.log(receiverImage);
+          // console.log(receiverImage);
           setRecieverImg(receiverImage.data.profilePicture);
         }
 
         if (receiver === usm) {
           const senderImage = await axios.get("/api/v1/getuser/" + receiver);
-          console.log(senderImage);
+          // console.log(senderImage);
           setSenderImg(senderImage.data.profilePicture);
         } else {
           const receiverImage = await axios.get("/api/v1/getuser/" + receiver);
-          console.log(receiverImage);
+          // console.log(receiverImage);
           setRecieverImg(receiverImage.data.profilePicture);
         }
       }
@@ -70,13 +72,13 @@ function Message() {
 
   const getGroupMessages = async (req, res) => {
     try {
-      console.log(conversationId);
+      // console.log(conversationId);
       if (conversationId.type === "group") {
         const response = await axios.get(
           "/api/v1/getgrpmsg/" + conversationId.id
         );
-        console.log(response);
-        setGroupMessage(response.data);
+        // console.log(response);
+        // setGroupMessage(response.data);  
       }
     } catch (err) {
       console.log(err);
@@ -87,18 +89,18 @@ function Message() {
     try {
       // console.log(sender);
       const response = await axios.get("/api/v1/getspecificgroup/" + otherName);
-      console.log(response.data);
+      // console.log(response.data);
       setGroupMemberImage([]);
       setGroupMemberImage([
         response.data[0].groupadmin,
         ...response.data[0].groupmembers,
       ]);
 
-      console.log(groupMemberImage);
+      // console.log(groupMemberImage);
 
       groupMemberImage.map(async (elm) => {
         const response = await axios.get("api/v1/getuser/" + elm);
-        console.log(response.data.profilePicture);
+        // console.log(response.data.profilePicture);
 
       });
     } catch (err) {
@@ -118,9 +120,16 @@ function Message() {
     }
   };
 
+  const DeleteSingleMessage = async (id) => {
+    if(window.confirm("Are You Sure You Want To Delete This Message..?")){
+      await axios.delete("/api/v1/deleteSpecificMessage/" + id);
+      setdeletemsg(!deletemsg);
+    }
+  }
+
   useEffect(() => {
     mainGetFunction();
-  }, [conversationId.id, isDone]);
+  }, [conversationId.id, isDone, refresh, isProfileOpen.msgdeleted, deletemsg]);
 
   return conversationId.type === "group" ? (
     <>
@@ -141,7 +150,9 @@ function Message() {
     <>
       {msg.map((key) => {
         return (
-          <div className={key.sender === usm ? "message own" : "message"}>
+          <div className={key.sender === usm ? "message own" : "message"}
+            onDoubleClick={()=>DeleteSingleMessage(key._id)}
+          >
             <div className="messageTop">
               <img
                 className="messageImg"
@@ -151,7 +162,7 @@ function Message() {
               <p className="messageText">{key.text}</p>
             </div>
             <div className="messageBottom">{format(key.createdAt)}</div>
-          </div>
+          </div>  
         );
       })}
     </>

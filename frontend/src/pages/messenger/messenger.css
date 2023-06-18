@@ -169,7 +169,8 @@ textarea:focus{
     position: absolute;
     z-index: 1;
     height: 65px;
-    background-color: #2F58CD;
+    /* background-color: #2F58CD; */
+    background-color: #4942E4;
     font-weight: 500;
     color: white;
     border-top-left-radius: 10px;

@@ -18,6 +18,8 @@ function Conversation() {
     isProfileOpen,
     refresh,
     setRefresh,
+    unseenMsgs,
+    setUnseenMsgs,
   } = useContext(userContext);
 
   const [photos, setPhotos] = useState([]);
@@ -72,6 +74,7 @@ function Conversation() {
       console.log(err);
     }
   };
+
 
   useEffect(() => {
     getConv();
@@ -184,11 +187,17 @@ function Conversation() {
                 return elm !== usm;
               });
               setOtherName(n);
+              unseenMsgs.includes(key.members[1] === usm ? key.members[0] : key.members[1]) && setUnseenMsgs(prev=>{
+                return prev.filter(elm=>{
+                  return elm !== (key.members[1] === usm ? key.members[0] : key.members[1])
+                })
+              });
             }}
           >
             <img className="conversationImg" src={photos[index]} alt="" />
             <span className="conversationName">
               {key.members[1] === usm ? key.members[0] : key.members[1]}
+              {unseenMsgs.includes(key.members[1] === usm ? key.members[0] : key.members[1]) && <div className="newmsgs"></div>}
             </span>
           </div>
         );

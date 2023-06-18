@@ -210,8 +210,7 @@ const GroupProfile = () => {
                     return <div className='Member'>{elm} 
                       {index===0 ? (<span className='AdminTag'>Admin</span>
                        ):(
-                        <span className='AdminTag'>
-
+                        groupInfo.groupadmin === usm && <span className='AdminTag'>
                             <svg xmlns="http://www.w3.org/2000/svg" height="1em" 
                             viewBox="0 0 640 512" 
                             onClick={()=>deleteMember(elm)}

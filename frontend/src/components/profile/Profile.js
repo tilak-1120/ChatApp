@@ -60,10 +60,9 @@ const Profile = () => {
   ]);
 
   if(isProfileOpen.profile === "group"){
-    return <GroupProfile />
+    return <GroupProfile />;
   }
 
-  // console.log("path is : " + profilePic);
   if (isProfileOpen.profile === "private") {
     return <OtherProfile />;
   }

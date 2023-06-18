@@ -4,7 +4,7 @@ import { userContext } from "../../App";
 import axios from "axios";
 
 const OtherProfile = () => {
-  const { otherName, isProfileOpen, setIsProfileOpen } =
+  const { otherName, isProfileOpen, setIsProfileOpen, conversationId } =
     useContext(userContext);
   const [otherUserData, setOtherUserData] = useState({});
 
@@ -13,9 +13,14 @@ const OtherProfile = () => {
     setOtherUserData(response.data);
   };
 
+  const handelDeleteMesssages = async () => {
+    if(window.confirm("Are You Sure You Want To Delete All Messages With " + otherName))
+    await axios.delete("/api/v1/deleteMessages/" + conversationId.id)
+  }
+
   useEffect(() => {
     getInfo();
-  });
+  },[]);
 
   return (
     <div className="otherProfile">
@@ -52,6 +57,16 @@ const OtherProfile = () => {
             <p className="aboutPara" style={{ color: "gray" }}></p>
           )}
         </p>
+      </div>
+      <div className="buttons">
+        <button className="addconvButton"
+          onClick={()=>{
+            handelDeleteMesssages();
+            setIsProfileOpen({
+              msgdeleted: !isProfileOpen.msgdeleted
+            })
+          }}
+        >Delete All Messages</button>
       </div>
     </div>
   );
