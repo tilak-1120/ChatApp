@@ -13,6 +13,7 @@ function Conversation() {
     setConversationId,
     conv,
     setConv,
+    otherName,
     setOtherName,
     setIsProfileOpen,
     isProfileOpen,
@@ -161,6 +162,9 @@ function Conversation() {
                 type: "group",
               });
               setOtherName(key.groupname);
+              setIsProfileOpen({
+                state: false
+              })
             }}
           >
             <img className="conversationImg" src={key.groupProfile} alt="" />
@@ -187,11 +191,16 @@ function Conversation() {
                 return elm !== usm;
               });
               setOtherName(n);
-              unseenMsgs.includes(key.members[1] === usm ? key.members[0] : key.members[1]) && setUnseenMsgs(prev=>{
+              (unseenMsgs.includes(key.members[1] === usm ? key.members[0] : key.members[1]) &&
+              !otherName === key.members[1] === usm ? key.members[0] : key.members[1]) && setUnseenMsgs(prev=>{
                 return prev.filter(elm=>{
                   return elm !== (key.members[1] === usm ? key.members[0] : key.members[1])
                 })
               });
+              
+              setIsProfileOpen({
+                state: false
+              })
             }}
           >
             <img className="conversationImg" src={photos[index]} alt="" />

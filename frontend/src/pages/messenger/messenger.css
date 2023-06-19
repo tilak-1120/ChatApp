@@ -184,6 +184,7 @@ textarea:focus{
   .selectedUser:hover{
     transform: scale(1.02);
     border-radius: 10px;
+
   }
 
   .msgBox{

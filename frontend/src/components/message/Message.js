@@ -120,10 +120,12 @@ function Message() {
     }
   };
 
-  const DeleteSingleMessage = async (id) => {
-    if(window.confirm("Are You Sure You Want To Delete This Message..?")){
-      await axios.delete("/api/v1/deleteSpecificMessage/" + id);
-      setdeletemsg(!deletemsg);
+  const DeleteSingleMessage = async (id, sender) => {
+    if(sender === usm){
+      if(window.confirm("Are You Sure You Want To Delete This Message..?")){
+        await axios.delete("/api/v1/deleteSpecificMessage/" + id);
+        setdeletemsg(!deletemsg);
+      }
     }
   }
 
@@ -151,7 +153,7 @@ function Message() {
       {msg.map((key) => {
         return (
           <div className={key.sender === usm ? "message own" : "message"}
-            onDoubleClick={()=>DeleteSingleMessage(key._id)}
+            onDoubleClick={()=>DeleteSingleMessage(key._id, key.sender)}
           >
             <div className="messageTop">
               <img

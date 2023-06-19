@@ -93,7 +93,7 @@ function Messenger() {
     socket.current.emit("addUser", usm);
     socket.current.on("getUsers", (users) => {
       setUsersOnline(users);
-      // console.log(users);
+      console.log(users);
     });
 
     socket.current.emit("addGroupUsers", usm); // need to be changed

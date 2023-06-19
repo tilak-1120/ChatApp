@@ -37,13 +37,21 @@ io.on("connection", (socket) => {
     io.emit("getUsers", users);
   });
 
+  // socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+  //   const user = getUser(receiverId);
+  //   io.to(user.socketId).emit("getMessage", {
+  //     senderId,
+  //     text,
+  //   });
+  // });
+
   socket.on("sendMessage", ({ sender, receiver, text ,_id}) => {
+      io.emit("getMessage", {
+        sender,
+        text,
+      });
     // const user = getUser(receiver);
     console.log(receiver);
-    io.emit("getMessage", {
-      sender,
-      text,
-    });
   });
 
   socket.on("disconnect", () => {

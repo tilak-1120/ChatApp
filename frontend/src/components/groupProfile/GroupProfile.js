@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const GroupProfile = () => {
 
-    const {otherName, setIsProfileOpen, isProfileOpen, usm, refresh, conv} = useContext(userContext);
+    const {otherName, setIsProfileOpen, isProfileOpen, usm, refresh, conv, setRefresh, setConversationId} = useContext(userContext);
 
     const [groupMembers , setGroupMembers] = useState([]);
     const [groupInfo , setGroupInfo] = useState();
@@ -13,6 +13,7 @@ const GroupProfile = () => {
     const [imgInp , setImgInp] = useState(false);
     const [files, setFiles] = useState(null);
     const [addMembers, setAddMembers] = useState(false);
+    const [updateAdmin, setUpdateAdmin] = useState(false);
 
     const GetGroupDetails = async (req,res) => {
         try{
@@ -62,8 +63,55 @@ const GroupProfile = () => {
                 if(response.status === 200){
                     alert(member + " Is Removed From The Group "+"'"+otherName+"'.");
                 }
+                setRefresh(!refresh);
             }catch(err){
                 alert("There Was Error Removing "+"'"+member+"'"+"from "+"'"+otherName+"'")
+                console.log(err);
+            }
+        }
+    }
+
+    const DeleteGroup = async () => {
+        try{
+            if(window.confirm("Are You Sure, You Want To Delete Group "+"''"+otherName+"''")){
+                await axios.delete("/api/v1/deletegroup/" + otherName);
+                setRefresh(!refresh);
+                setConversationId({
+                    id: ""
+                });
+                setIsProfileOpen({
+                    state: !isProfileOpen.state
+                })
+            }
+        }catch(err){
+            console.log(err);
+        }
+    };
+
+    const UpdateAdmin = async (e) => {
+        try{
+            if(window.confirm("By Pressing Ok, You No Longer Will Be Admin Of "+"''"+otherName+"''"+"Group")){
+                await axios.put("/api/v1/updateAdmin/"+otherName+"/"+e.target.value+"/"+groupInfo?.groupadmin);
+                setRefresh(!refresh);
+                setUpdateAdmin(!updateAdmin)
+            }
+        } catch(err){
+            console.log(err);
+        }
+    }
+
+    const LeaveGroup = async () => {
+        if(window.confirm("Are You Sure You Want To Leave "+"''"+otherName+"''"+"Group")){
+            try{
+                await axios.put("/api/v1/editgroupmember/"+otherName+"/"+usm);
+                setRefresh(!refresh);
+                setIsProfileOpen({
+                    state: !isProfileOpen.state
+                })
+                setConversationId({
+                    id:""
+                })
+            }catch(err){
                 console.log(err);
             }
         }
@@ -72,6 +120,26 @@ const GroupProfile = () => {
     useEffect(()=>{
         GetGroupDetails();
     },[ imgInp, imageEdit, setImgInp, refresh, addMembers]);
+
+    if(updateAdmin){
+        return <div className='AddMemberDiv'> 
+        <h3 style={{textAlign:'center'}}>Group Members:</h3>
+            {groupInfo?.groupmembers.map(elm => {
+                return <button className='friends'
+                    value={elm}
+                    onClick={(e)=>UpdateAdmin(e)}
+                >{elm}</button>
+            })}
+            <button
+            className="addconvButton"
+            onClick={() => {
+              setUpdateAdmin(!updateAdmin);
+            }}
+          >
+            Close
+          </button>
+        </div>
+    }
 
     if(addMembers){
         return <div className='AddMemberDiv'>
@@ -177,6 +245,14 @@ const GroupProfile = () => {
             <div className="usm">
                 <h2>{groupInfo?.groupname}</h2>
             </div>
+            {groupInfo?.groupadmin === usm && <div className='deleteAndUpdate'>
+                <p className='newphoto'
+                    onClick={DeleteGroup}
+                >Delete Group</p>
+                <p className='newphoto'
+                    onClick={()=>setUpdateAdmin(!updateAdmin)}
+                >Make Admin</p>
+            </div>}
             <span className="membersLabel">ABOUT: </span>
             <div className="about">
                 <p className="aboutContent">
@@ -202,9 +278,9 @@ const GroupProfile = () => {
                     </div>
                 }
             </div>
-            <span className='membersLabel'>MEMBERS : <button className='AddMemberBtn'
+            <span className='membersLabel'>MEMBERS : {groupInfo?.groupadmin === usm &&<button className='AddMemberBtn'
                 onClick={()=>setAddMembers(!addMembers)}
-            >Add Friends</button></span>
+            >Add Friends</button>}</span>
             <div className='Members'>
                 {groupMembers.map((elm,index)=>{
                     return <div className='Member'>{elm} 
@@ -214,14 +290,17 @@ const GroupProfile = () => {
                             <svg xmlns="http://www.w3.org/2000/svg" height="1em" 
                             viewBox="0 0 640 512" 
                             onClick={()=>deleteMember(elm)}
-                            ><style>{`svg{fill:#fff}`}</style><path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM472 200H616c13.3 0 24 10.7 24 24s-10.7 24-24 24H472c-13.3 0-24-10.7-24-24s10.7-24 24-24z"/></svg>
+                            ><style>{`svg{fill:#11009e}`}</style><path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM472 200H616c13.3 0 24 10.7 24 24s-10.7 24-24 24H472c-13.3 0-24-10.7-24-24s10.7-24 24-24z"/></svg>
                         
                         </span>)}</div>
                 })}
             </div>
-
-
-
+            {groupInfo?.groupadmin !== usm && 
+            <div className='leavegrpDiv'>
+                <p className='newphoto'
+                    onClick={LeaveGroup}
+                >Leave Group</p>
+            </div>}
         </div>
     );
 };
