@@ -13,11 +13,14 @@ function Conversation() {
     setConversationId,
     conv,
     setConv,
+    otherName,
     setOtherName,
     setIsProfileOpen,
     isProfileOpen,
     refresh,
     setRefresh,
+    unseenMsgs,
+    setUnseenMsgs,
   } = useContext(userContext);
 
   const [photos, setPhotos] = useState([]);
@@ -158,6 +161,9 @@ function Conversation() {
                 type: "group",
               });
               setOtherName(key.groupname);
+              setIsProfileOpen({
+                state: false,
+              });
             }}
           >
             <img className="conversationImg" src={key.groupProfile} alt="" />
@@ -184,11 +190,31 @@ function Conversation() {
                 return elm !== usm;
               });
               setOtherName(n);
+              (unseenMsgs.includes(
+                key.members[1] === usm ? key.members[0] : key.members[1]
+              ) && (!otherName === key.members[1]) === usm
+                ? key.members[0]
+                : key.members[1]) &&
+                setUnseenMsgs((prev) => {
+                  return prev.filter((elm) => {
+                    return (
+                      elm !==
+                      (key.members[1] === usm ? key.members[0] : key.members[1])
+                    );
+                  });
+                });
+
+              setIsProfileOpen({
+                state: false,
+              });
             }}
           >
             <img className="conversationImg" src={photos[index]} alt="" />
             <span className="conversationName">
               {key.members[1] === usm ? key.members[0] : key.members[1]}
+              {unseenMsgs.includes(
+                key.members[1] === usm ? key.members[0] : key.members[1]
+              ) && <div className="newmsgs"></div>}
             </span>
           </div>
         );

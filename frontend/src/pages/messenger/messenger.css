@@ -106,6 +106,7 @@ textarea:focus{
     margin-top: 10px;
     max-height: 89vh;
     border-radius: 10px;
+    overflow: scroll;
   }
   
   .chatMenuWrapper{
@@ -118,7 +119,7 @@ textarea:focus{
     padding: 10px;
     height: 100%;
   }
-
+  
   .noConversationText {
     justify-content: center;
     align-items: center;
@@ -168,7 +169,8 @@ textarea:focus{
     position: absolute;
     z-index: 1;
     height: 65px;
-    background-color: #2F58CD;
+    /* background-color: #2F58CD; */
+    background-color: #4942E4;
     font-weight: 500;
     color: white;
     border-top-left-radius: 10px;
@@ -182,6 +184,7 @@ textarea:focus{
   .selectedUser:hover{
     transform: scale(1.02);
     border-radius: 10px;
+
   }
 
   .msgBox{

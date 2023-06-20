@@ -23,9 +23,11 @@ function App() {
   const [isProfileOpen, setIsProfileOpen] = useState({
     state: false,
     profile: "own",
+    msgdeleted: Boolean,
   });
   const [refresh, setRefresh] = useState(Boolean);
   const [groupMessage, setGroupMessage] = useState([]);
+  const [unseenMsgs, setUnseenMsgs] = useState([]);
 
   return (
     <>
@@ -53,6 +55,8 @@ function App() {
           setRefresh,
           groupMessage,
           setGroupMessage,
+          unseenMsgs,
+          setUnseenMsgs,
         }}
       >
         <BrowserRouter>

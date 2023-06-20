@@ -13,19 +13,22 @@ function Message() {
     setMsg,
     otherName,
     groupMessage,
+    refresh,
+    isProfileOpen,
     setGroupMessage,
   } = useContext(userContext);
   const [senderImg, setSenderImg] = useState("");
   const [recieverImg, setRecieverImg] = useState("");
   const [groupMemberImage, setGroupMemberImage] = useState([]);
   const [groupMemberImageObject, setGroupMemberImageObject] = useState([]);
+  const [deletemsg, setdeletemsg] = useState(Boolean);
 
   const getMessages = async (req, res) => {
     try {
       if (conversationId.id) {
         const response = await axios.get("/api/v1/getmsg/" + conversationId.id);
         setMsg(response.data);
-        console.log(response);
+        // console.log(response);
       }
     } catch (err) {
       console.log(err);
@@ -100,7 +103,7 @@ function Message() {
       // console.log(groupMemberImage);
 
       groupMemberImage.map(async (elm) => {
-        const response = await axios.get("api/v1/getuser/" + elm);
+        const response = await axios.get("/api/v1/getuser/" + elm);
         // console.log(response.data.profilePicture);
         setGroupMemberImageObject((prev) => {
           return [...prev, response.data.profilePicture];
@@ -124,9 +127,18 @@ function Message() {
     }
   };
 
+  const deleteSingleMessage = async (id, sender) => {
+    if (sender === usm) {
+      if (window.confirm("Are You Sure You Want To Delete This Message..?")) {
+        await axios.delete("/api/v1/deleteSpecificMessage/" + id);
+        setdeletemsg(!deletemsg);
+      }
+    }
+  };
+
   useEffect(() => {
     mainGetFunction();
-  }, [conversationId.id, isDone]);
+  }, [conversationId.id, isDone, refresh, isProfileOpen.msgdeleted, deletemsg]);
 
   return conversationId.type === "group" ? (
     <>
@@ -147,7 +159,10 @@ function Message() {
     <>
       {msg.map((key) => {
         return (
-          <div className={key.sender === usm ? "message own" : "message"}>
+          <div
+            className={key.sender === usm ? "message own" : "message"}
+            onDoubleClick={() => deleteSingleMessage(key._id, key.sender)}
+          >
             <div className="messageTop">
               <img
                 className="messageImg"

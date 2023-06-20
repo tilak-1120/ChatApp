@@ -174,3 +174,25 @@ exports.editGroupAbout = async (req, res) => {
     res.status(500).json(err);
   }
 };
+
+exports.updateGroupAdmin = async (req, res) => {
+  try {
+    const response = await Group.updateOne(
+      { groupname: req.params.grpName },
+      { $set: { groupadmin: req.params.newAdmin } },
+      { new: true }
+    );
+    await Group.updateOne(
+      { groupname: req.params.grpName },
+      { $push: { groupmembers: req.params.usm } }
+    );
+    await Group.updateOne(
+      { groupname: req.params.grpName },
+      { $pull: { groupmembers: req.params.newAdmin } }
+    );
+
+    res.status(200).json(response);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};

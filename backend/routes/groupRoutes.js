@@ -10,6 +10,7 @@ const {
   removeGroupProfilePic,
   addMembers,
   editGroupAbout,
+  updateGroupAdmin,
 } = require("../controllers/groupController");
 
 const upload = require("multer")({ dest: "uploads/" });
@@ -44,5 +45,8 @@ router.put("/addMember/:groupName/:newMember", addMembers);
 
 // Editing Group About
 router.put("/editGroupAbout/:groupname", editGroupAbout);
+
+// Update Group Admin
+router.put("/updateAdmin/:grpName/:newAdmin/:usm", updateGroupAdmin);
 
 module.exports = router;

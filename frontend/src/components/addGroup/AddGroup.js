@@ -1,49 +1,50 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef, useContext, useState } from "react";
 import { userContext } from "../../App";
 import axios from "axios";
 import "./addGroup.css";
 
 const AddGroup = (props) => {
   const { usm } = useContext(userContext);
+  const [isFocus, setIsFocus] = useState(false);
   const groupName = useRef();
   const memberName = useRef();
   const newMemberName = useRef();
   const newGroupName = useRef();
 
-  const addGroup = async (req, res) => {
-    try {
-      try {
-        const findGroup = await axios.get(
-          "/api/v1/getspecificgroup/" + groupName.current.value
-        );
+  // const addGroup = async (req, res) => {
+  //   try {
+  //     try {
+  //       const findGroup = await axios.get(
+  //         "/api/v1/getspecificgroup/" + groupName.current.value
+  //       );
 
-        const findMember = await axios.get(
-          "/api/v1/getuser/" + memberName.current.value
-        );
+  //       const findMember = await axios.get(
+  //         "/api/v1/getuser/" + memberName.current.value
+  //       );
 
-        // if (findGroup.status === 404 || findMember.status === 404) {
-        //   return alert("Invalid Details");
-        // }
-      } catch (err) {
-        // alert("Groupname or Membername doesn't exists. Try a different one.");
-        console.log(err);
-      }
+  //       // if (findGroup.status === 404 || findMember.status === 404) {
+  //       //   return alert("Invalid Details");
+  //       // }
+  //     } catch (err) {
+  //       // alert("Groupname or Membername doesn't exists. Try a different one.");
+  //       console.log(err);
+  //     }
 
-      const updateGroup = await axios.put(
-        "/api/v1/updategroup/" + groupName.current.value,
-        {
-          groupmembers: memberName.current.value,
-        }
-      );
-      console.log(updateGroup);
-      groupName.current.value = "";
-      memberName.current.value = "";
-      alert("New Member Added Successfully");
-    } catch (err) {
-      alert("Groupname or Membername doesn't exists. Try a different one.");
-      console.log(err);
-    }
-  };
+  //     const updateGroup = await axios.put(
+  //       "/api/v1/updategroup/" + groupName.current.value,
+  //       {
+  //         groupmembers: memberName.current.value,
+  //       }
+  //     );
+  //     console.log(updateGroup);
+  //     groupName.current.value = "";
+  //     memberName.current.value = "";
+  //     alert("New Member Added Successfully");
+  //   } catch (err) {
+  //     alert("Groupname or Membername doesn't exists. Try a different one.");
+  //     console.log(err);
+  //   }
+  // };
 
   const createGroup = async (req, res) => {
     try {
@@ -52,13 +53,13 @@ const AddGroup = (props) => {
           "/api/v1/getspecificgroup/" + newGroupName.current.value
         );
 
-        const findMember = await axios.get(
-          "/api/v1/getuser/" + newMemberName.current.value
-        );
+        // const findMember = await axios.get(
+        //   "/api/v1/getuser/" + newMemberName.current.value
+        // );
         // console.log(findGroup);
         // console.log(findMember);
       } catch (err) {
-        alert("Try a different groupname or membername");
+        // alert("Try a different groupname or membername");
         console.log(err);
       }
 
@@ -79,13 +80,13 @@ const AddGroup = (props) => {
     }
   };
 
-  const handleGroupClick = (e) => {
-    e.preventDefault();
-    addGroup();
-    // if ((groupName.current.value && memberName.current.value) !== "") {
-    //   return props.set(false);
-    // }
-  };
+  // const handleGroupClick = (e) => {
+  //   e.preventDefault();
+  //   addGroup();
+  //   // if ((groupName.current.value && memberName.current.value) !== "") {
+  //   //   return props.set(false);
+  //   // }
+  // };
 
   const handleNewGroupClick = (e) => {
     e.preventDefault();
@@ -101,26 +102,40 @@ const AddGroup = (props) => {
   return (
     <div>
       <div className="addconvMain">
+        {isFocus && (
+          <h2>
+            After Creating Group You Can Add Members To The Group From Profile.
+          </h2>
+        )}
         <input
           className="input"
           type="text"
           placeholder="Create Group"
           ref={newGroupName}
+          onFocus={() => setIsFocus(!isFocus)}
         />
-        <input
+        {/* <input
           className="input"
           type="text"
           placeholder="Add Member"
           ref={newMemberName}
-        />
+        /> */}
         <div className="buttons">
           <button className="addButton" onClick={handleNewGroupClick}>
             Create Group
           </button>
+          <button
+            className="backButton"
+            onClick={() => {
+              return props.set(false);
+            }}
+          >
+            Back To Chat
+          </button>
         </div>
       </div>
 
-      <div className="addconvMain">
+      {/* <div className="addconvMain">
         <input
           className="input"
           type="text"
@@ -148,7 +163,7 @@ const AddGroup = (props) => {
             Back To Chat
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
