@@ -76,7 +76,6 @@
 
 .refreshButton{
   margin-left: 10px;
-  margin: auto;
   font-weight: 700;
   font-size: 20px;
   color: #086ef5;
@@ -89,7 +88,10 @@
   height: 40px;
   cursor: pointer;
   transition: all ease-in-out 0.7s;
+  margin: auto;
 }
+
+
 
 .refreshButton:hover{
   transform: scale(-1);
@@ -126,6 +128,9 @@
     border-radius: 20px;
     z-index: 100;
   }
+  .conversation:hover + .newmsgs{
+    background-color: white;
+  }
   
   .conversationImg {
     width: 40px;
@@ -144,8 +149,20 @@
   }
 
   .conversationName {
+    width: 80%;
     font-weight: 500;
+    display: flex;
+    justify-content: space-between;
   }
+
+  .newmsgs{
+    background-color: lime;
+    border-radius: 100%;
+    height: 12px;
+    width: 12px;
+    margin-top: 8px;
+  }
+
 
   .input{
     display: flex;

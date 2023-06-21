@@ -197,7 +197,6 @@ const GroupProfile = () => {
         groupAbout: newGroupAbout.current.value,
       });
       setPencilClicked(!pencilClicked);
-      // newGroupAbout.current.value === "";
       // console.log("Inside edit about function");
     } catch (err) {
       alert("Can't Update Group's About Section");
@@ -207,7 +206,15 @@ const GroupProfile = () => {
 
   useEffect(() => {
     GetGroupDetails();
-  }, [imgInp, imageEdit, setImgInp, refresh, addMembers]);
+  }, [
+    imgInp,
+    imageEdit,
+    setImgInp,
+    refresh,
+    addMembers,
+    pencilClicked,
+    setPencilClicked,
+  ]);
 
   if (updateAdmin) {
     return (
@@ -308,36 +315,35 @@ const GroupProfile = () => {
 
   if (pencilClicked) {
     return (
-      <>
-        <div className="editAboutmain">
-          <input
-            type="text"
-            className="input"
-            placeholder={"Enter Your About Content [0-100]"}
-            style={{ margin: "auto", marginBottom: "40px" }}
-            ref={newGroupAbout}
-            maxLength={100}
-          />
-          <div className="aboutButtons">
-            <button
-              className="editButton"
-              onClick={() => {
-                addAbout();
-              }}
-            >
-              Edit
-            </button>
-            <button
-              className="editButton"
-              onClick={() => {
-                setPencilClicked(!pencilClicked);
-              }}
-            >
-              Back to Chat
-            </button>
-          </div>
+      <div className="editAboutmain">
+        <input
+          type="text"
+          className="input"
+          placeholder={"Enter Your About Content [0-100]"}
+          style={{ margin: "auto", marginBottom: "40px" }}
+          ref={newGroupAbout}
+          maxLength={100}
+        />
+        <div className="aboutButtons">
+          <button
+            className="editButton"
+            onClick={() => {
+              addAbout();
+              setPencilClicked(!pencilClicked);
+            }}
+          >
+            Edit
+          </button>
+          <button
+            className="editButton"
+            onClick={() => {
+              setPencilClicked(!pencilClicked);
+            }}
+          >
+            Back to Chat
+          </button>
         </div>
-      </>
+      </div>
     );
   }
 
@@ -421,7 +427,7 @@ const GroupProfile = () => {
             <div className="p">
               <svg
                 className="pencil"
-                onClick={setPencilClicked(!pencilClicked)}
+                onClick={() => setPencilClicked(!pencilClicked)}
                 xmlns="http://www.w3.org/2000/svg"
                 height="1em"
                 viewBox="0 0 512 512"
@@ -478,7 +484,6 @@ const GroupProfile = () => {
           </div>
         )}
       </div>
-      ;
     </>
   );
 };

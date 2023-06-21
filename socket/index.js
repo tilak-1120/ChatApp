@@ -58,7 +58,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendGroupMessage", ({ sender, text }) => {
-    // const user = getUser(receiver);
+    const user = getUser(receiver);
     // console.log(receiver);
     io.emit("getGroupMessage", {
       sender,
