@@ -56,7 +56,7 @@ const AddGroup = (props) => {
         // const findMember = await axios.get(
         //   "/api/v1/getuser/" + newMemberName.current.value
         // );
-        // console.log(findGroup);
+        console.log(findGroup);
         // console.log(findMember);
       } catch (err) {
         // alert("Try a different groupname or membername");
@@ -66,14 +66,12 @@ const AddGroup = (props) => {
       const addGroup = await axios.post("/api/v1/addgroup", {
         groupname: newGroupName.current.value,
         groupadmin: usm,
-        groupmembers: [newMemberName.current.value],
       });
       console.log(addGroup);
       alert(
         "New Group Created and Member Added Successfully. You're the group Admin"
       );
       newGroupName.current.value = "";
-      newMemberName.current.value = "";
     } catch (err) {
       alert("Try a different groupname or membername");
       console.log(err);

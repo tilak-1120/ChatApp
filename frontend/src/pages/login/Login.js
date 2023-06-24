@@ -61,7 +61,7 @@ function Login() {
             <button className="loginButton" type="submit">
               Log In
             </button>
-            <span className="loginForgot">Forgot Password?</span>
+            {/* <span className="loginForgot">Forgot Password?</span> */}
             <button
               className="loginRegisterButton"
               onClick={() => {

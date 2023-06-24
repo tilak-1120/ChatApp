@@ -146,8 +146,10 @@ function Message() {
         return (
           <div className={key.sender === usm ? "message own" : "message"}>
             <div className="messageTop">
-              <img className="messageImg" src="" alt="alt" />
-              <div>{key.sender !== usm && key.sender}</div>
+              {/* <img className="messageImg" src="" alt="alt" /> */}
+              <div className="groupSender">
+                {key.sender !== usm && key.sender}
+              </div>
               <p className="messageText">{key.text}</p>
             </div>
             <div className="messageBottom">{format(key.createdAt)}</div>

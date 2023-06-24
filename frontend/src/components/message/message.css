@@ -43,3 +43,8 @@
       /* background-color:  #4E31AA; */
       background-color: #090580;
   }
+
+  .groupSender{
+    font-weight: 600;
+    text-transform: capitalize;
+  }
